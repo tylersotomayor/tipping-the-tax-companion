@@ -1,0 +1,841 @@
+<title>Tipping the Tax — Interactive Companion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --asphalt:#14161A; --asphalt2:#1C1F25; --cab:#F5B301; --cabdeep:#D99C00;
+  --paper:#FBFAF7; --paper2:#F3F1EA; --ink:#1E2126; --ink2:#4A4F57; --mut:#787E87;
+  --rule:#E4E1D8; --navy:#2B5EA7; --blue2:#8FB4DF; --grey:#9AA1A9;
+  --card:#FFFFFF; --shadow:0 1px 2px rgba(20,22,26,.06),0 8px 28px rgba(20,22,26,.07);
+}
+@media (prefers-color-scheme: dark){:root{
+  --paper:#191B1F; --paper2:#14161A; --ink:#E8E6E0; --ink2:#B9BDC4; --mut:#8B9199;
+  --rule:#2C2F35; --card:#20232A; --navy:#7FA9E0; --blue2:#4A6B96;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#191B1F; --paper2:#14161A; --ink:#E8E6E0; --ink2:#B9BDC4; --mut:#8B9199;
+  --rule:#2C2F35; --card:#20232A; --navy:#7FA9E0; --blue2:#4A6B96;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
+}
+:root[data-theme="light"]{
+  --paper:#FBFAF7; --paper2:#F3F1EA; --ink:#1E2126; --ink2:#4A4F57; --mut:#787E87;
+  --rule:#E4E1D8; --card:#FFFFFF; --navy:#2B5EA7; --blue2:#8FB4DF;
+  --shadow:0 1px 2px rgba(20,22,26,.06),0 8px 28px rgba(20,22,26,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;
+  font-size:19px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.eyebrow{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:600}
+h1,h2{text-wrap:balance;line-height:1.12;margin:0}
+p{margin:0 0 1.1em}
+a{color:inherit}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+.prose{max-width:640px;margin:0 auto}
+section.block{padding:74px 0 30px}
+.kicker{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.kicker .dot{width:10px;height:10px;background:var(--cab);border:1.5px solid var(--ink);border-radius:2px;flex:none}
+h2{font-size:34px;font-weight:600}
+.lede{font-size:21px;color:var(--ink2)}
+.note{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;color:var(--mut);line-height:1.5}
+.hl{background:linear-gradient(transparent 62%, color-mix(in srgb, var(--cab) 55%, transparent) 62%);padding:0 2px}
+strong{font-weight:650}
+
+/* ---------------- HERO: the night cab ---------------- */
+.hero{background:
+  radial-gradient(1200px 500px at 70% -10%, #232733 0%, transparent 60%),
+  radial-gradient(900px 420px at 12% 8%, #20242E 0%, transparent 55%),
+  var(--asphalt);
+  color:#EDEBE4;padding:64px 0 84px}
+.hero .eyebrow{color:#B8BDC7}
+.hero h1{font-size:clamp(44px,7vw,84px);font-weight:650;color:#fff}
+.hero .sub{font-size:clamp(19px,2.2vw,23px);color:#C9CDD5;max-width:640px;margin-top:16px}
+.hero .authors{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;
+  letter-spacing:.08em;text-transform:uppercase;color:#9AA1AD;margin-top:20px}
+.cabline{height:5px;background:repeating-linear-gradient(90deg,var(--cab) 0 26px,transparent 26px 44px)}
+
+/* the simulator */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,420px);gap:44px;align-items:center;margin-top:52px}
+@media(max-width:880px){.sim{grid-template-columns:1fr}}
+.screen{background:#0C0E12;border:1px solid #2A2E37;border-radius:18px;
+  box-shadow:0 0 0 6px #05060810, 0 24px 70px rgba(0,0,0,.55), inset 0 0 60px rgba(120,150,200,.05);
+  padding:22px 22px 18px;font-family:ui-sans-serif,system-ui,sans-serif}
+.screen .shead{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid #23262e;padding-bottom:10px;margin-bottom:12px}
+.screen .shead .t{font-size:13px;letter-spacing:.12em;color:#8E95A1;text-transform:uppercase}
+.screen .shead .clock{font-family:ui-monospace,Menlo,monospace;font-size:22px;color:#fff;font-variant-numeric:tabular-nums}
+.frow{display:flex;justify-content:space-between;font-size:15.5px;color:#C6CAD3;padding:4.5px 0}
+.frow .amt{font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+.frow.rush{color:var(--cab);font-weight:600;overflow:hidden;max-height:0;opacity:0;
+  transition:max-height .35s ease,opacity .35s ease,padding .35s ease;padding:0}
+.frow.rush.on{max-height:34px;opacity:1;padding:4.5px 0}
+@media (prefers-reduced-motion: reduce){.frow.rush{transition:none}}
+.frow.total{border-top:1px solid #23262e;margin-top:8px;padding-top:10px;color:#fff;font-weight:650;font-size:17px}
+.tipq{font-size:13px;color:#8E95A1;margin:14px 0 8px;text-align:center}
+.btnrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+button.tip{appearance:none;border:0;border-radius:10px;background:var(--cab);color:#141414;
+  font-family:ui-sans-serif,system-ui,sans-serif;font-weight:700;font-size:15px;
+  padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;
+  transition:transform .08s ease, background .2s}
+button.tip:hover{background:#FFC419}
+button.tip:active{transform:scale(.97)}
+button.tip:focus-visible{outline:3px solid #fff;outline-offset:2px}
+button.tip .amt{font-family:ui-monospace,Menlo,monospace;font-size:18px;font-variant-numeric:tabular-nums}
+.small-opts{display:flex;justify-content:space-between;font-size:12.5px;color:#6E7580;margin-top:10px}
+.receipt{margin-top:14px;border-top:1.5px dashed #2A2E37;padding-top:12px;
+  font-family:ui-monospace,Menlo,monospace;font-size:13.5px;color:#B9BFC9;min-height:64px;
+  font-variant-numeric:tabular-nums;white-space:pre-line}
+.receipt .y{color:var(--cab)}
+.simside .eyebrow{color:#8E95A1}
+.simside h2{color:#fff;font-size:30px;margin:8px 0 14px}
+.simside p{color:#C2C6CF;font-size:17.5px}
+.slider{margin-top:18px}
+.slider input[type=range]{width:100%;accent-color:var(--cab)}
+.ticks{display:flex;justify-content:space-between;font-family:ui-monospace,Menlo,monospace;
+  font-size:12px;color:#7A818C;margin-top:4px;font-variant-numeric:tabular-nums}
+.ticks .four{color:var(--cab);font-weight:700}
+
+/* ---------------- charts ---------------- */
+.fig{background:var(--card);border:1px solid var(--rule);border-radius:14px;
+  box-shadow:var(--shadow);padding:22px 22px 14px;margin:30px auto 8px;max-width:860px}
+.fig .ftitle{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:650;font-size:16px;margin:0 0 2px}
+.fig .fsub{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--mut);margin:0 0 12px}
+.figwrap{position:relative;overflow-x:auto}
+svg{display:block;max-width:100%}
+.axis{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12px;fill:var(--mut)}
+.serlab{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;font-weight:650}
+.tt{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);
+  font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;padding:6px 9px;border-radius:7px;
+  opacity:0;transform:translate(-50%,-130%);white-space:nowrap;transition:opacity .12s}
+.toggle{display:inline-flex;border:1px solid var(--rule);border-radius:9px;overflow:hidden;
+  font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;margin:2px 0 10px}
+.toggle button{appearance:none;border:0;background:transparent;color:var(--ink2);
+  padding:7px 14px;cursor:pointer;font-weight:600}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.toggle button:focus-visible{outline:2px solid var(--navy);outline-offset:-2px}
+details.dtab{max-width:860px;margin:6px auto 0;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--mut)}
+details.dtab summary{cursor:pointer}
+details.dtab table{border-collapse:collapse;margin-top:8px}
+details.dtab td,details.dtab th{border:1px solid var(--rule);padding:3px 8px;font-variant-numeric:tabular-nums}
+.figcap{max-width:860px;margin:10px auto 0;font-family:ui-sans-serif,system-ui,sans-serif;
+  font-size:14px;color:var(--mut);line-height:1.55}
+.figcap b{color:var(--ink);font-weight:650}
+
+/* receipt / dial */
+.dial{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:40px;align-items:start;max-width:860px;margin:26px auto 0}
+@media(max-width:760px){.dial{grid-template-columns:1fr}}
+.paper-receipt{background:#FFFDF6;color:#23252B;border:1px solid #E7E2D2;border-radius:4px;
+  box-shadow:var(--shadow);padding:20px 22px;font-family:ui-monospace,Menlo,monospace;
+  font-size:14px;line-height:1.75;font-variant-numeric:tabular-nums;
+  -webkit-mask-image:linear-gradient(#000 96%,transparent);mask-image:linear-gradient(#000 96%,transparent)}
+:root[data-theme="dark"] .paper-receipt{background:#F4EFE2}
+.paper-receipt .rr{display:flex;justify-content:space-between;gap:16px}
+.paper-receipt .big{font-size:19px;font-weight:700}
+.paper-receipt hr{border:0;border-top:1.5px dashed #C9C2AC;margin:10px 0}
+.dialside .eyebrow{margin-bottom:6px}
+.dialside input[type=range]{width:100%;accent-color:var(--cabdeep)}
+.dialside .feeval{font-family:ui-monospace,Menlo,monospace;font-size:34px;font-weight:700;
+  font-variant-numeric:tabular-nums}
+footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
+  font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;color:var(--mut)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;margin:34px auto 0}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px 14px;box-shadow:var(--shadow)}
+.stat .n{font-family:ui-monospace,Menlo,monospace;font-size:30px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.stat .n .u{color:var(--cabdeep);font-size:20px}
+.stat .l{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;color:var(--mut);margin-top:4px;line-height:1.4}
+/* stepper */
+.stepper{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 12px}
+.stepper button{appearance:none;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;font-weight:650;
+  border:1.5px solid var(--rule);background:var(--card);color:var(--ink2);border-radius:999px;padding:7px 14px;cursor:pointer}
+.stepper button[aria-current="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.stepper button:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.howbox{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:10px;padding-top:12px}
+.hownum{font-family:ui-monospace,Menlo,monospace;font-size:40px;font-weight:700;font-variant-numeric:tabular-nums}
+.hownum .per{font-size:16px;color:var(--mut);font-weight:400}
+.howtext{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14.5px;color:var(--ink2);max-width:430px;line-height:1.55}
+/* roads chips */
+.roads{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.roads button{appearance:none;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:600;
+  border:1.5px solid var(--rule);background:transparent;color:var(--ink2);border-radius:8px;padding:6px 11px;cursor:pointer}
+.roads button[aria-pressed="true"]{border-color:var(--cabdeep);background:color-mix(in srgb, var(--cab) 18%, transparent);color:var(--ink)}
+.roads button:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.roadnote{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--mut);min-height:20px;margin:0 0 8px}
+.cg{transition:opacity .18s}
+/* literature cards */
+.litgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:860px;margin:26px auto 0}
+@media(max-width:720px){.litgrid{grid-template-columns:1fr}}
+.lit{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:18px 18px 14px;box-shadow:var(--shadow);
+  font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;line-height:1.55}
+.lit .who{font-weight:700;font-size:15px;color:var(--ink)}
+.lit .venue{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:2px 0 10px}
+.lit dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cabdeep);font-weight:700;margin-top:8px}
+.lit dd{margin:2px 0 0;color:var(--ink2)}
+.lit.ours{grid-column:1/-1;border-left:4px solid var(--cab)}
+.lit.ours .who{font-size:17px}
+/* cab canvas */
+.cabwrap{max-width:860px;margin:26px auto 6px;background:var(--asphalt);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.cabwrap canvas{display:block;width:100%;height:auto}
+.cabcap{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:#9AA1AD;padding:10px 16px 12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.cabcap .mono{color:#E8E6E0}
+
+</style>
+
+<!-- ============================== HERO ============================== -->
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">An interactive companion to the working paper · Columbia University · July 2026</div>
+    <h1>Tipping the Tax</h1>
+    <p class="sub">New York taxi screens compute suggested tips on the <em>all-in</em> total — a total
+    that includes every government surcharge on the meter. When policy adds a fee, every
+    suggested tip rises with it. Try it yourself.</p>
+    <div class="authors">Tyler Sotomayor · Gabriel Uceda-Sosa</div>
+
+    <div class="sim">
+      <div class="simside">
+        <div class="eyebrow">The experiment, in your hand</div>
+        <h2>Drag the pickup past 4:00&nbsp;PM.</h2>
+        <p>At exactly 4:00 on weekdays, the $2.50 rush-hour surcharge switches on — assigned by
+        the <strong style="color:#fff">pickup minute</strong>. Nothing about the ride, the driver,
+        or your regard for them changes. Watch what happens to the suggested tips.</p>
+        <div class="slider">
+          <input id="clockSlider" type="range" min="940" max="980" value="958"
+            aria-label="Pickup time, minutes since midnight">
+          <div class="ticks"><span>3:40</span><span>3:50</span><span class="four">4:00</span><span>4:10</span><span>4:20</span></div>
+        </div>
+      </div>
+      <div class="screen" aria-live="polite">
+        <div class="shead"><span class="t">Trip complete</span><span class="clock" id="clock">3:58 PM</span></div>
+        <div class="frow"><span>Metered fare</span><span class="amt">$17.70</span></div>
+        <div class="frow"><span>MTA + improvement</span><span class="amt">$1.50</span></div>
+        <div class="frow"><span>Congestion surcharge</span><span class="amt">$2.50</span></div>
+        <div class="frow rush" id="rushRow"><span>Rush-hour surcharge</span><span class="amt">$2.50</span></div>
+        <div class="frow total"><span>Total</span><span class="amt" id="total">$21.70</span></div>
+        <div class="tipq">ADD A TIP?</div>
+        <div class="btnrow">
+          <button class="tip" data-p="20"><span>20%</span><span class="amt" id="b20">$4.34</span></button>
+          <button class="tip" data-p="25"><span>25%</span><span class="amt" id="b25">$5.43</span></button>
+          <button class="tip" data-p="30"><span>30%</span><span class="amt" id="b30">$6.51</span></button>
+        </div>
+        <div class="small-opts"><span>No tip</span><span>Custom amount</span></div>
+        <div class="receipt" id="receipt">— press a button —</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cabline"></div>
+
+<!-- ============================== PAPER ============================== -->
+<div class="wrap">
+
+<section class="block reveal">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">The question</span></div>
+    <h2>When a statute puts a dollar on the meter, how much crosses into the tip?</h2>
+    <p class="lede" style="margin-top:14px">A tip is a voluntary payment for service. The surcharge changes
+    nothing about the service — so economic theory says the answer should be
+    <strong>zero</strong>. Pure button arithmetic says <strong>seventeen cents</strong> (the average tip
+    rate). The whole paper lives between those two numbers.</p>
+    <p>What we find: <span class="hl"><strong>about eleven cents of every statutory surcharge dollar
+    becomes tip</strong></span> — riders tip a tax dollar at roughly four-fifths the rate they tip the
+    fare itself. They don&rsquo;t switch to cash, don&rsquo;t re-time their hails, and when the surcharge was
+    repriced 150% overnight, they undid about a fifth of it. The interface performs the inattention.</p>
+  </div>
+
+<div class="stats reveal" id="statstrip">
+  <div class="stat"><div class="n" data-t="43" data-suf="M">0</div><div class="l">standard-rate card trips in the clock windows, Sep 2021–Sep 2024</div></div>
+  <div class="stat"><div class="n" data-t="57.3" data-dec="1" data-suf="%">0</div><div class="l">of June-2025 tips sit at <em>exactly</em> 20% of the all-in total</div></div>
+  <div class="stat"><div class="n" data-t="210" data-pre="$" data-suf="M">0</div><div class="l">of non-fare dollars enter tip bases every year on card trips</div></div>
+  <div class="stat"><div class="n" data-t="11" data-suf="¢" data-u="1">0</div><div class="l">of every statutory surcharge dollar becomes tip — the paper&rsquo;s estimate</div></div>
+</div>
+</section>
+
+<section class="block reveal" id="base">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact one · the base</span></div>
+    <h2>The base is visible in behavior alone</h2>
+    <p style="margin-top:12px">Take every credit-card tip in June 2025 — 2.18 million of them — and ask:
+    what number is each tip a percentage <em>of</em>? Toggle between the two candidates.</p>
+  </div>
+  <div class="fig">
+    <p class="ftitle">Share of tips at each half-point percentage</p>
+    <p class="fsub">June 2025 · standard-rate credit-card trips with positive tips</p>
+    <div class="toggle" role="group" aria-label="Choose the base">
+      <button id="tgAllin" aria-pressed="true">÷ the all-in total</button>
+      <button id="tgFare" aria-pressed="false">÷ the metered fare alone</button>
+    </div>
+    <div class="figwrap" id="spikesWrap"></div>
+  </div>
+  <p class="figcap"><b>Against the all-in total, 57.3% of tips sit at exactly 20%</b> — with spikes at 25
+  and 30, the three buttons. Against the fare alone, the same tips scatter: no bin above 3.6%. The
+  buttons&rsquo; base — and only the buttons&rsquo; base — organizes tipping.</p>
+  <details class="dtab"><summary>Data table</summary><div id="spikesTable"></div></details>
+</section>
+
+<section class="block reveal" id="experiment">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact two · the experiment</span></div>
+    <h2>Tips step up the minute the surcharge does</h2>
+    <p style="margin-top:12px">The rush surcharge is assigned by the pickup minute, so trips minutes apart
+    face different tip bases. Because fares also drift at rush hour, the estimates difference the 4:00&nbsp;PM
+    jump against weekends and exempt holidays — where the same clock carries no surcharge.</p>
+  </div>
+  <div class="fig">
+    <p class="ftitle">Mean credit-card tip by pickup minute</p>
+    <p class="fsub">Weekdays, Sep 2021 – Sep 2024 · hover for values</p>
+    <div class="figwrap" id="fourpmWrap"></div>
+  </div>
+  <p class="figcap">Two statutory regimes, one design: the legislature repriced the surcharge from
+  <b>$1.00 to $2.50</b> on December 19, 2022 — and the step at 4:00 grew with the dose. Per statutory
+  dollar the pooled estimate is <b>0.108 (SE 0.001)</b>; dropping every control moves it about a cent.</p>
+  <details class="dtab"><summary>Data table</summary><div id="fourpmTable"></div></details>
+</section>
+
+
+<section class="block reveal" id="how">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">How the estimate is built</span></div>
+    <h2>From a raw jump to a causal parameter, in four steps</h2>
+    <p style="margin-top:12px">The estimand is a partial derivative:
+    <span class="mono">ρ = ∂E[tip] / ∂(statutory surcharge)</span> — how many cents the average
+    credit-card tip moves when the legislature puts one more dollar on the meter. Step through
+    what it takes to earn the word <em>causal</em>.</p>
+  </div>
+  <div class="fig">
+    <div class="stepper" role="tablist" aria-label="Estimation steps">
+      <button aria-current="true" data-step="1">1 · The raw jump</button>
+      <button aria-current="false" data-step="2">2 · The confound</button>
+      <button aria-current="false" data-step="3">3 · The counterfactual</button>
+      <button aria-current="false" data-step="4">4 · The parameter</button>
+    </div>
+    <div class="figwrap" id="howWrap"></div>
+    <div class="howbox">
+      <div class="hownum" id="howNum">$0.389</div>
+      <div class="howtext" id="howTxt">Compare weekday trips just before and just after 4:00&nbsp;PM in the $2.50
+      regime: tips jump <b>$0.389</b>. Tempting — but wrong to call causal yet.</div>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="parameter">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact three · one parameter</span></div>
+    <h2>Every locked estimate, one axis</h2>
+    <p style="margin-top:12px">Doses from $0.50 to $5.00. Surcharges switching on and off. Three clocks. A flat
+    fare where the usual confound cannot exist. A spatial boundary with no clock at all. And one honest
+    failure — reported, in grey, with its diagnosis.</p>
+  </div>
+  
+  <div class="fig" style="padding-bottom:18px">
+  <p class="ftitle">Five kinds of variation, one number</p>
+  <p class="fsub">Each road is immune to a different objection. Hover to isolate its estimates below.</p>
+  <div class="roads" id="roads">
+    <button data-g="all" aria-pressed="true">All</button>
+    <button data-g="clock" aria-pressed="false">⏱ Clock switches</button>
+    <button data-g="jfk" aria-pressed="false">✈ JFK flat fare</button>
+    <button data-g="toll" aria-pressed="false">🗺 Spatial toll</button>
+    <button data-g="falsif" aria-pressed="false">Ø Falsification</button>
+  </div>
+  <p class="roadnote" id="roadnote">Six legislated switches at three clocks, two doses, both directions.</p>
+    <div class="figwrap" id="coefWrap"></div>
+  </div>
+  <p class="figcap">The dashed line is the pooled clock mean, <b>0.108</b>. The 2025 congestion toll —
+  identified purely from geography — lands at <b>0.107</b>. JFK&rsquo;s $5.00 flat-fare surcharge gives
+  <b>0.149</b> with <b>no controls at all</b>. The one failure (6&nbsp;AM weekdays) has a diagnosis: dawn
+  airport composition, and its weekend twin behaves.</p>
+  <details class="dtab"><summary>Data table</summary><div id="coefTable"></div></details>
+</section>
+
+<section class="block reveal" id="notice">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact four · attention</span></div>
+    <h2>Nobody notices</h2>
+    <p style="margin-top:12px">On December 19, 2022 the rush surcharge rose 150% overnight — $1.50 more on
+    the same bill. Two habits predict two lines: riders who keep tipping their usual <em>percentage</em>
+    show a flat tip rate; riders who defend their tip <em>dollars</em> ("the ride didn&rsquo;t change") must cut
+    the rate by 1.1 points. Watch which habit wins.</p>
+  </div>
+  <div class="fig">
+    <p class="ftitle">Weekly tip rate: rush window vs. surcharge-free pre-rush window</p>
+    <p class="fsub">Weekdays, 26 weeks around December 19, 2022</p>
+    <div class="figwrap" id="decWrap"></div>
+  </div>
+  <p class="figcap">The rate fell <b>0.22 points</b> — one-fifth of the way to the dollar-defending
+  benchmark. Riders kept their customary percentage on the bigger bill; four-fifths of the increase passed
+  through, immediately and permanently. The one-fifth that didn&rsquo;t? Almost entirely the round-dollar
+  tippers ("$5 every time"), whose tips don&rsquo;t scale with the bill by construction.</p>
+  <details class="dtab"><summary>Data table</summary><div id="decTable"></div></details>
+</section>
+
+
+<section class="block reveal" id="lit">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">What came before</span></div>
+    <h2>Standing on four literatures — moving a different lever</h2>
+    <p style="margin-top:12px">Each earlier paper moved one piece of this machine. Ours moves the piece
+    a legislature controls.</p>
+  </div>
+  <div class="litgrid">
+    <div class="lit"><div class="who">Haggag &amp; Paci</div><div class="venue">AEJ: Applied · 2014</div>
+      <dl><dt>They vary</dt><dd>the menu — screens switched from $2/$3/$4 to 20/25/30% at a $15 fare</dd>
+      <dt>They find</dt><dd>defaults cause tips: +$0.28 at the threshold (we re-ran their archive)</dd>
+      <dt>Left open</dt><dd>what the percentage <em>multiplies</em></dd></dl></div>
+    <div class="lit"><div class="who">Thakral &amp; Tô</div><div class="venue">Working paper · 2026</div>
+      <dl><dt>They vary</dt><dd>the 2012 fare hike; vendors&rsquo; bases (tax &amp; tolls in or out)</dd>
+      <dt>They find</dt><dd>bigger base → bigger tips, even for non-button riders; tolls crowd tips in when included</dd>
+      <dt>Left open</dt><dd>statutory fees, legislated doses, fiscal totals</dd></dl></div>
+    <div class="lit"><div class="who">Chetty, Looney &amp; Kroft</div><div class="venue">AER · 2009</div>
+      <dl><dt>They vary</dt><dd>tax salience on the shelf tag</dd>
+      <dt>They find</dt><dd>consumers under-react to taxes they don&rsquo;t see</dd>
+      <dt>Left open</dt><dd>interfaces that do the arithmetic <em>for</em> you</dd></dl></div>
+    <div class="lit"><div class="who">Lynn &amp; Kwortnik</div><div class="venue">IJHM · 2023 · 68M checks</div>
+      <dl><dt>They vary</dt><dd>nothing — cross-section of restaurant bills</dd>
+      <dt>They find</dt><dd>tip rates rise with local sales-tax rates</dd>
+      <dt>Left open</dt><dd>causality, and cents-per-dollar magnitude</dd></dl></div>
+    <div class="lit ours"><div class="who">This paper</div><div class="venue">Sotomayor &amp; Uceda-Sosa · 2026</div>
+      <dl><dt>We vary</dt><dd>the <b>statutory base itself</b>: six clock switches, a 150% legislated repricing,
+      a $4.50→$5.00 flat-fare dose, and a congestion toll&rsquo;s spatial boundary</dd>
+      <dt>We find</dt><dd>ρ = ∂E[tip]/∂surcharge ≈ <b>11¢ per legislated dollar</b> — stable everywhere the design
+      is valid, zero where it should be, inert among whole-dollar tippers — and <b>$21M/yr</b> of congestion
+      charges converted to unlegislated gratuities</dd>
+      <dt>New</dt><dd>policy variation → a fiscal-incidence parameter, and the base as a regulable dial</dd></dl></div>
+  </div>
+</section>
+
+<section class="block reveal" id="toll">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact five · a real tax</span></div>
+    <h2>Congestion pricing, dosed</h2>
+    <p style="margin-top:12px">The rush surcharge is a fare component. The January 2025 congestion toll is a
+    <em>tax</em> — collected from riders, remitted by drivers to the MTA. Routes differ in how often the
+    toll is actually charged, and the tip effect climbs step-for-step with that dose.</p>
+  </div>
+  
+  <div class="cabwrap reveal">
+    <canvas id="cabCanvas" width="860" height="330" aria-label="Stylized cab crossing the 60th Street toll line"></canvas>
+    <div class="cabcap"><span>Stylized Manhattan grid — the dashed line is 60th St.</span>
+      <span>Fee collected <span class="mono" id="cabFee">$0.00</span> · tips induced <span class="mono" id="cabTip">$0.00</span></span></div>
+  </div>
+
+<div class="fig">
+    <p class="ftitle">Tip effect by share of route&rsquo;s trips charged the 2025 toll</p>
+    <p class="fsub">Fare-conditioned, relative to routes charged &lt;10% · 95% CIs</p>
+    <div class="figwrap" id="doseWrap"></div>
+  </div>
+  <p class="figcap">Zone drift would have to reproduce this gradient by coincidence. In the paper, the
+  district also <b>materializes on a map</b> at the real toll date — and not at a placebo date.</p>
+</section>
+
+<!-- ============================== DIAL ============================== -->
+<section class="block reveal" id="ledger">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">The policy dial</span></div>
+    <h2>Price a fee before it exists</h2>
+    <p style="margin-top:12px">Pass-through is stable from $0.50 to $5.00, so the arithmetic
+    <span class="mono">ρ × fee × volume</span> prices any meter fee&rsquo;s tip leak <em>in advance</em>.
+    Drag the toll.</p>
+  </div>
+  <div class="dial">
+    <div class="paper-receipt" aria-live="polite">
+      <div class="rr"><span>NYC TAXI · ANNUAL LEDGER</span><span>EST. 2026</span></div>
+      <hr>
+      <div class="rr"><span>Toll per trip</span><span id="rFee">$0.75</span></div>
+      <div class="rr"><span>Charged card trips / yr</span><span>22.1M</span></div>
+      <hr>
+      <div class="rr"><span>Riders → MTA</span><span id="rMTA">$16.6M</span></div>
+      <div class="rr big"><span>Riders → drivers (tips)</span><span id="rTips">$1.8–2.5M</span></div>
+      <div class="rr"><span>True rider cost / trip</span><span id="rCost">$0.83</span></div>
+      <hr>
+      <div class="rr"><span>Legislated by</span><span>NY STATE</span></div>
+      <div class="rr"><span>Tip line legislated by</span><span class="y" style="color:#B4830A">NOBODY</span></div>
+    </div>
+    <div class="dialside">
+      <div class="eyebrow">Set the toll</div>
+      <div class="feeval" id="feeval">$0.75</div>
+      <input id="feeSlider" type="range" min="0" max="5" step="0.25" value="0.75" aria-label="Toll per trip in dollars">
+      <p class="note" style="margin-top:12px">Tips range uses ρ = 0.108 (per statutory dollar, pooled) to
+      0.150 (per recorded dollar). Volume held at the 2025 toll&rsquo;s charged card trips; dose-linearity is
+      tested in the paper up to $5.00. The actual 2025 toll is $0.75; the 2019 congestion surcharge — still
+      running at $2.50 — moves about <span class="mono">$8–11M</span> a year by itself.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">The point</span></div>
+    <h2>What a default is computed <em>on</em> matters as much as what it is set <em>to</em></h2>
+    <p style="margin-top:14px">In 2012, one payment vendor computed suggestions on the fare and surcharge;
+    the other included tax and tolls. By 2025 every vendor had converged on the all-in total — and with
+    that convergence, a fiscal channel nobody voted on: about <strong>$21 million a year</strong> of New
+    York&rsquo;s congestion charges continue past the MTA to drivers as gratuities. The transfer runs from
+    riders to drivers, plausibly progressively — the point is not that it is bad, but that
+    <em>no one chose it</em>. The dial that sets it is one line of payment-terminal arithmetic.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="prose">
+    <p><strong style="color:var(--ink)">Tipping the Tax: How Government Surcharges Become Gratuities</strong><br>
+    Tyler Sotomayor &amp; Gabriel Uceda-Sosa · Columbia University, Department of Economics · Working paper, July 2026.<br>
+    Presented at the PREDOC Undergraduate Research Summer Conference, Chicago Booth, July 30–31, 2026.</p>
+    <p>Data: NYC Taxi &amp; Limousine Commission public trip records (2009–2026). Every figure on this page is
+    computed from the paper&rsquo;s committed estimation cells and replication logs. Estimates: pooled clock
+    ITT 0.108 (0.001); ranges shown are ITT-to-ρ<sup>IV</sup>. Tips are observed for card payments only.</p>
+    <p class="mono">tylersotomayor.com · tyler.sotomayor@columbia.edu · gu1245@columbia.edu</p>
+  </div>
+</footer>
+</div>
+
+<script>
+const DATA = {"fourpm":[{"reg":0,"rv":-45,"tip":3.0897},{"reg":0,"rv":-44,"tip":3.114},{"reg":0,"rv":-43,"tip":3.1291},{"reg":0,"rv":-42,"tip":3.0721},{"reg":0,"rv":-41,"tip":3.0868},{"reg":0,"rv":-40,"tip":3.0939},{"reg":0,"rv":-39,"tip":3.0784},{"reg":0,"rv":-38,"tip":3.0876},{"reg":0,"rv":-37,"tip":3.123},{"reg":0,"rv":-36,"tip":3.0931},{"reg":0,"rv":-35,"tip":3.0918},{"reg":0,"rv":-34,"tip":3.1349},{"reg":0,"rv":-33,"tip":3.0849},{"reg":0,"rv":-32,"tip":3.1061},{"reg":0,"rv":-31,"tip":3.1221},{"reg":0,"rv":-30,"tip":3.1005},{"reg":0,"rv":-29,"tip":3.109},{"reg":0,"rv":-28,"tip":3.107},{"reg":0,"rv":-27,"tip":3.0925},{"reg":0,"rv":-26,"tip":3.1297},{"reg":0,"rv":-25,"tip":3.1069},{"reg":0,"rv":-24,"tip":3.099},{"reg":0,"rv":-23,"tip":3.0982},{"reg":0,"rv":-22,"tip":3.0954},{"reg":0,"rv":-21,"tip":3.0857},{"reg":0,"rv":-20,"tip":3.076},{"reg":0,"rv":-19,"tip":3.0854},{"reg":0,"rv":-18,"tip":3.072},{"reg":0,"rv":-17,"tip":3.0671},{"reg":0,"rv":-16,"tip":3.0577},{"reg":0,"rv":-15,"tip":3.0584},{"reg":0,"rv":-14,"tip":3.054},{"reg":0,"rv":-13,"tip":3.0752},{"reg":0,"rv":-12,"tip":3.0621},{"reg":0,"rv":-11,"tip":3.0644},{"reg":0,"rv":-10,"tip":3.0801},{"reg":0,"rv":-9,"tip":3.0586},{"reg":0,"rv":-8,"tip":3.0904},{"reg":0,"rv":-7,"tip":3.1122},{"reg":0,"rv":-6,"tip":3.0707},{"reg":0,"rv":-5,"tip":3.1153},{"reg":0,"rv":-4,"tip":3.118},{"reg":0,"rv":-3,"tip":3.1083},{"reg":0,"rv":-2,"tip":3.1185},{"reg":0,"rv":-1,"tip":3.1029},{"reg":0,"rv":0,"tip":3.183},{"reg":0,"rv":1,"tip":3.1925},{"reg":0,"rv":2,"tip":3.1803},{"reg":0,"rv":3,"tip":3.1734},{"reg":0,"rv":4,"tip":3.2191},{"reg":0,"rv":5,"tip":3.2422},{"reg":0,"rv":6,"tip":3.2141},{"reg":0,"rv":7,"tip":3.2118},{"reg":0,"rv":8,"tip":3.2239},{"reg":0,"rv":9,"tip":3.2057},{"reg":0,"rv":10,"tip":3.196},{"reg":0,"rv":11,"tip":3.2252},{"reg":0,"rv":12,"tip":3.2071},{"reg":0,"rv":13,"tip":3.2313},{"reg":0,"rv":14,"tip":3.2237},{"reg":0,"rv":15,"tip":3.2062},{"reg":0,"rv":16,"tip":3.23},{"reg":0,"rv":17,"tip":3.224},{"reg":0,"rv":18,"tip":3.2066},{"reg":0,"rv":19,"tip":3.1987},{"reg":0,"rv":20,"tip":3.1958},{"reg":0,"rv":21,"tip":3.1968},{"reg":0,"rv":22,"tip":3.1568},{"reg":0,"rv":23,"tip":3.1717},{"reg":0,"rv":24,"tip":3.1879},{"reg":0,"rv":25,"tip":3.2247},{"reg":0,"rv":26,"tip":3.2025},{"reg":0,"rv":27,"tip":3.2132},{"reg":0,"rv":28,"tip":3.1926},{"reg":0,"rv":29,"tip":3.1746},{"reg":0,"rv":30,"tip":3.2081},{"reg":0,"rv":31,"tip":3.2118},{"reg":0,"rv":32,"tip":3.1739},{"reg":0,"rv":33,"tip":3.1802},{"reg":0,"rv":34,"tip":3.1531},{"reg":0,"rv":35,"tip":3.1712},{"reg":0,"rv":36,"tip":3.1977},{"reg":0,"rv":37,"tip":3.1491},{"reg":0,"rv":38,"tip":3.1584},{"reg":0,"rv":39,"tip":3.1527},{"reg":0,"rv":40,"tip":3.1465},{"reg":0,"rv":41,"tip":3.1767},{"reg":0,"rv":42,"tip":3.1468},{"reg":0,"rv":43,"tip":3.1498},{"reg":0,"rv":44,"tip":3.1887},{"reg":0,"rv":45,"tip":3.1205},{"reg":1,"rv":-45,"tip":4.0662},{"reg":1,"rv":-44,"tip":4.0485},{"reg":1,"rv":-43,"tip":4.0411},{"reg":1,"rv":-42,"tip":4.0157},{"reg":1,"rv":-41,"tip":4.0375},{"reg":1,"rv":-40,"tip":4.0144},{"reg":1,"rv":-39,"tip":4.0196},{"reg":1,"rv":-38,"tip":4.0369},{"reg":1,"rv":-37,"tip":4.0354},{"reg":1,"rv":-36,"tip":4.0095},{"reg":1,"rv":-35,"tip":4.0011},{"reg":1,"rv":-34,"tip":4.0258},{"reg":1,"rv":-33,"tip":4.0239},{"reg":1,"rv":-32,"tip":4.0369},{"reg":1,"rv":-31,"tip":4.0195},{"reg":1,"rv":-30,"tip":3.9996},{"reg":1,"rv":-29,"tip":4.0576},{"reg":1,"rv":-28,"tip":4.0274},{"reg":1,"rv":-27,"tip":4.0413},{"reg":1,"rv":-26,"tip":4.0277},{"reg":1,"rv":-25,"tip":4.0037},{"reg":1,"rv":-24,"tip":4.0188},{"reg":1,"rv":-23,"tip":4.0131},{"reg":1,"rv":-22,"tip":3.9668},{"reg":1,"rv":-21,"tip":4.0115},{"reg":1,"rv":-20,"tip":3.9937},{"reg":1,"rv":-19,"tip":3.9974},{"reg":1,"rv":-18,"tip":3.9938},{"reg":1,"rv":-17,"tip":3.9618},{"reg":1,"rv":-16,"tip":4.001},{"reg":1,"rv":-15,"tip":3.9928},{"reg":1,"rv":-14,"tip":4.0119},{"reg":1,"rv":-13,"tip":3.9828},{"reg":1,"rv":-12,"tip":3.9831},{"reg":1,"rv":-11,"tip":3.9691},{"reg":1,"rv":-10,"tip":3.9609},{"reg":1,"rv":-9,"tip":4.0031},{"reg":1,"rv":-8,"tip":4.0053},{"reg":1,"rv":-7,"tip":4.0028},{"reg":1,"rv":-6,"tip":3.9915},{"reg":1,"rv":-5,"tip":4.0558},{"reg":1,"rv":-4,"tip":4.0376},{"reg":1,"rv":-3,"tip":4.1047},{"reg":1,"rv":-2,"tip":4.0629},{"reg":1,"rv":-1,"tip":4.0665},{"reg":1,"rv":0,"tip":4.2936},{"reg":1,"rv":1,"tip":4.3089},{"reg":1,"rv":2,"tip":4.3367},{"reg":1,"rv":3,"tip":4.312},{"reg":1,"rv":4,"tip":4.3497},{"reg":1,"rv":5,"tip":4.3379},{"reg":1,"rv":6,"tip":4.3414},{"reg":1,"rv":7,"tip":4.3922},{"reg":1,"rv":8,"tip":4.3777},{"reg":1,"rv":9,"tip":4.3715},{"reg":1,"rv":10,"tip":4.3946},{"reg":1,"rv":11,"tip":4.348},{"reg":1,"rv":12,"tip":4.3882},{"reg":1,"rv":13,"tip":4.3989},{"reg":1,"rv":14,"tip":4.3789},{"reg":1,"rv":15,"tip":4.363},{"reg":1,"rv":16,"tip":4.3547},{"reg":1,"rv":17,"tip":4.3488},{"reg":1,"rv":18,"tip":4.3602},{"reg":1,"rv":19,"tip":4.3497},{"reg":1,"rv":20,"tip":4.3397},{"reg":1,"rv":21,"tip":4.3741},{"reg":1,"rv":22,"tip":4.3342},{"reg":1,"rv":23,"tip":4.3173},{"reg":1,"rv":24,"tip":4.312},{"reg":1,"rv":25,"tip":4.3644},{"reg":1,"rv":26,"tip":4.3559},{"reg":1,"rv":27,"tip":4.3604},{"reg":1,"rv":28,"tip":4.3559},{"reg":1,"rv":29,"tip":4.3169},{"reg":1,"rv":30,"tip":4.3373},{"reg":1,"rv":31,"tip":4.3454},{"reg":1,"rv":32,"tip":4.3706},{"reg":1,"rv":33,"tip":4.3493},{"reg":1,"rv":34,"tip":4.3321},{"reg":1,"rv":35,"tip":4.3463},{"reg":1,"rv":36,"tip":4.3354},{"reg":1,"rv":37,"tip":4.3156},{"reg":1,"rv":38,"tip":4.2872},{"reg":1,"rv":39,"tip":4.3263},{"reg":1,"rv":40,"tip":4.2975},{"reg":1,"rv":41,"tip":4.3079},{"reg":1,"rv":42,"tip":4.2757},{"reg":1,"rv":43,"tip":4.2911},{"reg":1,"rv":44,"tip":4.2693},{"reg":1,"rv":45,"tip":4.2566}],"spikes":{"allin":[{"bin":5.0,"sh":0.454},{"bin":5.5,"sh":0.67},{"bin":6.0,"sh":0.75},{"bin":6.5,"sh":0.778},{"bin":7.0,"sh":0.903},{"bin":7.5,"sh":0.932},{"bin":8.0,"sh":0.932},{"bin":8.5,"sh":0.864},{"bin":9.0,"sh":0.933},{"bin":9.5,"sh":0.993},{"bin":10.0,"sh":3.287},{"bin":10.5,"sh":0.805},{"bin":11.0,"sh":0.954},{"bin":11.5,"sh":0.771},{"bin":12.0,"sh":1.033},{"bin":12.5,"sh":0.8},{"bin":13.0,"sh":0.705},{"bin":13.5,"sh":0.722},{"bin":14.0,"sh":0.717},{"bin":14.5,"sh":0.681},{"bin":15.0,"sh":3.905},{"bin":15.5,"sh":0.518},{"bin":16.0,"sh":0.583},{"bin":16.5,"sh":0.508},{"bin":17.0,"sh":0.431},{"bin":17.5,"sh":0.29},{"bin":18.0,"sh":0.858},{"bin":18.5,"sh":0.358},{"bin":19.0,"sh":0.704},{"bin":19.5,"sh":1.676},{"bin":20.0,"sh":57.27},{"bin":20.5,"sh":0.306},{"bin":21.0,"sh":0.125},{"bin":21.5,"sh":0.114},{"bin":22.0,"sh":0.21},{"bin":22.5,"sh":0.098},{"bin":23.0,"sh":0.088},{"bin":23.5,"sh":0.109},{"bin":24.0,"sh":0.209},{"bin":24.5,"sh":0.255},{"bin":25.0,"sh":8.488},{"bin":25.5,"sh":0.037},{"bin":26.0,"sh":0.056},{"bin":26.5,"sh":0.046},{"bin":27.0,"sh":0.04},{"bin":27.5,"sh":0.041},{"bin":28.0,"sh":0.036},{"bin":28.5,"sh":0.057},{"bin":29.0,"sh":0.057},{"bin":29.5,"sh":0.102},{"bin":30.0,"sh":3.216},{"bin":30.5,"sh":0.093},{"bin":31.0,"sh":0.029},{"bin":31.5,"sh":0.035},{"bin":32.0,"sh":0.014},{"bin":32.5,"sh":0.027},{"bin":33.0,"sh":0.066},{"bin":33.5,"sh":0.019},{"bin":34.0,"sh":0.022},{"bin":34.5,"sh":0.017},{"bin":35.0,"sh":0.026},{"bin":35.5,"sh":0.048},{"bin":36.0,"sh":0.006},{"bin":36.5,"sh":0.016},{"bin":37.0,"sh":0.01},{"bin":37.5,"sh":0.022},{"bin":38.0,"sh":0.011},{"bin":38.5,"sh":0.017},{"bin":39.0,"sh":0.012},{"bin":39.5,"sh":0.022},{"bin":40.0,"sh":0.008}],"fare":[{"bin":5.0,"sh":0.158},{"bin":5.5,"sh":0.245},{"bin":6.0,"sh":0.348},{"bin":6.5,"sh":0.464},{"bin":7.0,"sh":0.372},{"bin":7.5,"sh":0.443},{"bin":8.0,"sh":0.446},{"bin":8.5,"sh":0.503},{"bin":9.0,"sh":0.588},{"bin":9.5,"sh":0.599},{"bin":10.0,"sh":0.769},{"bin":10.5,"sh":0.357},{"bin":11.0,"sh":0.789},{"bin":11.5,"sh":0.909},{"bin":12.0,"sh":0.561},{"bin":12.5,"sh":1.149},{"bin":13.0,"sh":0.773},{"bin":13.5,"sh":0.771},{"bin":14.0,"sh":1.357},{"bin":14.5,"sh":0.432},{"bin":15.0,"sh":0.888},{"bin":15.5,"sh":1.237},{"bin":16.0,"sh":0.51},{"bin":16.5,"sh":0.785},{"bin":17.0,"sh":0.85},{"bin":17.5,"sh":1.025},{"bin":18.0,"sh":0.344},{"bin":18.5,"sh":1.02},{"bin":19.0,"sh":0.762},{"bin":19.5,"sh":0.691},{"bin":20.0,"sh":1.029},{"bin":20.5,"sh":0.789},{"bin":21.0,"sh":1.102},{"bin":21.5,"sh":1.119},{"bin":22.0,"sh":0.853},{"bin":22.5,"sh":1.243},{"bin":23.0,"sh":1.714},{"bin":23.5,"sh":2.838},{"bin":24.0,"sh":2.377},{"bin":24.5,"sh":2.713},{"bin":25.0,"sh":3.126},{"bin":25.5,"sh":3.443},{"bin":26.0,"sh":3.312},{"bin":26.5,"sh":3.559},{"bin":27.0,"sh":3.086},{"bin":27.5,"sh":3.197},{"bin":28.0,"sh":3.329},{"bin":28.5,"sh":2.952},{"bin":29.0,"sh":2.669},{"bin":29.5,"sh":3.556},{"bin":30.0,"sh":3.34},{"bin":30.5,"sh":1.897},{"bin":31.0,"sh":2.502},{"bin":31.5,"sh":2.185},{"bin":32.0,"sh":1.811},{"bin":32.5,"sh":2.657},{"bin":33.0,"sh":1.586},{"bin":33.5,"sh":1.731},{"bin":34.0,"sh":1.146},{"bin":34.5,"sh":2.68},{"bin":35.0,"sh":0.822},{"bin":35.5,"sh":1.429},{"bin":36.0,"sh":1.26},{"bin":36.5,"sh":1.031},{"bin":37.0,"sh":0.987},{"bin":37.5,"sh":1.166},{"bin":38.0,"sh":0.59},{"bin":38.5,"sh":1.0},{"bin":39.0,"sh":0.744},{"bin":39.5,"sh":0.418},{"bin":40.0,"sh":0.865}]},"dec22":[{"w":-15,"g":"pre","rate":18.606},{"w":-15,"g":"rush","rate":18.4028},{"w":-14,"g":"pre","rate":18.663},{"w":-14,"g":"rush","rate":18.4583},{"w":-13,"g":"pre","rate":18.7413},{"w":-13,"g":"rush","rate":18.6506},{"w":-12,"g":"pre","rate":18.7031},{"w":-12,"g":"rush","rate":18.5854},{"w":-11,"g":"pre","rate":18.8164},{"w":-11,"g":"rush","rate":18.5759},{"w":-10,"g":"pre","rate":18.8604},{"w":-10,"g":"rush","rate":18.6928},{"w":-9,"g":"pre","rate":18.8508},{"w":-9,"g":"rush","rate":18.6104},{"w":-8,"g":"pre","rate":18.797},{"w":-8,"g":"rush","rate":18.5448},{"w":-7,"g":"pre","rate":18.7301},{"w":-7,"g":"rush","rate":18.4981},{"w":-6,"g":"pre","rate":18.7615},{"w":-6,"g":"rush","rate":18.5922},{"w":-5,"g":"pre","rate":18.932},{"w":-5,"g":"rush","rate":18.7153},{"w":-4,"g":"pre","rate":18.8247},{"w":-4,"g":"rush","rate":18.6049},{"w":-3,"g":"pre","rate":18.9651},{"w":-3,"g":"rush","rate":18.6162},{"w":-2,"g":"pre","rate":19.0784},{"w":-2,"g":"rush","rate":18.7875},{"w":-1,"g":"pre","rate":18.8451},{"w":-1,"g":"rush","rate":18.8236},{"w":0,"g":"pre","rate":18.0873},{"w":0,"g":"rush","rate":17.5892},{"w":1,"g":"pre","rate":18.0836},{"w":1,"g":"rush","rate":17.6651},{"w":2,"g":"pre","rate":17.7028},{"w":2,"g":"rush","rate":17.3548},{"w":3,"g":"pre","rate":18.0054},{"w":3,"g":"rush","rate":17.5094},{"w":4,"g":"pre","rate":17.9566},{"w":4,"g":"rush","rate":17.7421},{"w":5,"g":"pre","rate":17.9571},{"w":5,"g":"rush","rate":17.5247},{"w":6,"g":"pre","rate":17.884},{"w":6,"g":"rush","rate":17.4272},{"w":7,"g":"pre","rate":18.0263},{"w":7,"g":"rush","rate":17.5841},{"w":8,"g":"pre","rate":17.8919},{"w":8,"g":"rush","rate":17.4467},{"w":9,"g":"pre","rate":17.9504},{"w":9,"g":"rush","rate":17.5256},{"w":10,"g":"pre","rate":17.9102},{"w":10,"g":"rush","rate":17.596},{"w":11,"g":"pre","rate":17.8858},{"w":11,"g":"rush","rate":17.5805},{"w":12,"g":"pre","rate":17.83},{"w":12,"g":"rush","rate":17.5193}],"coef":[{"lab":"Rush begins 4 PM, +$2.50","b":0.1169,"se":0.0018,"g":"clock"},{"lab":"Rush begins 4 PM, +$1.00","b":0.102,"se":0.0038,"g":"clock"},{"lab":"Overnight begins 8 PM, +$1.00","b":0.1066,"se":0.0074,"g":"clock"},{"lab":"Overnight begins 8 PM, +$0.50","b":0.0987,"se":0.0137,"g":"clock"},{"lab":"Rush ends 8 PM, \u2212$1.50","b":0.0937,"se":0.0028,"g":"clock"},{"lab":"Rush ends 8 PM, \u2212$0.50","b":0.0901,"se":0.007,"g":"clock"},{"lab":"JFK flat fare, +$5.00","b":0.1489,"se":0.0104,"g":"jfk"},{"lab":"JFK flat fare, +$4.50","b":0.1325,"se":0.0116,"g":"jfk"},{"lab":"2025 CBD toll (spatial)","b":0.1067,"se":0.0073,"g":"toll"},{"lab":"6 AM weekday (design fails)","b":-0.1042,"se":0.027,"g":"fail"},{"lab":"Weekend placebo","b":0.0096,"se":0.0026,"g":"placebo"}],"dose":[{"lab":"0\u201310% (ref.)","b":0.0,"se":0.0},{"lab":"10\u201350%","b":0.0071,"se":0.0111},{"lab":"50\u201390%","b":0.0605,"se":0.0154},{"lab":">90%","b":0.0851,"se":0.013}],"pooled":0.108,"pooledSE":0.0014,"fourpmWE":[{"rv":-45,"tip":3.8572},{"rv":-44,"tip":3.8446},{"rv":-43,"tip":3.8517},{"rv":-42,"tip":3.7909},{"rv":-41,"tip":3.8382},{"rv":-40,"tip":3.8232},{"rv":-39,"tip":3.8487},{"rv":-38,"tip":3.7933},{"rv":-37,"tip":3.8129},{"rv":-36,"tip":3.8628},{"rv":-35,"tip":3.8031},{"rv":-34,"tip":3.8374},{"rv":-33,"tip":3.8129},{"rv":-32,"tip":3.8289},{"rv":-31,"tip":3.8351},{"rv":-30,"tip":3.7808},{"rv":-29,"tip":3.8337},{"rv":-28,"tip":3.8661},{"rv":-27,"tip":3.8023},{"rv":-26,"tip":3.8643},{"rv":-25,"tip":3.7948},{"rv":-24,"tip":3.8235},{"rv":-23,"tip":3.8134},{"rv":-22,"tip":3.8259},{"rv":-21,"tip":3.8526},{"rv":-20,"tip":3.8348},{"rv":-19,"tip":3.7994},{"rv":-18,"tip":3.8424},{"rv":-17,"tip":3.7707},{"rv":-16,"tip":3.7958},{"rv":-15,"tip":3.829},{"rv":-14,"tip":3.8049},{"rv":-13,"tip":3.7952},{"rv":-12,"tip":3.8171},{"rv":-11,"tip":3.8093},{"rv":-10,"tip":3.7514},{"rv":-9,"tip":3.7694},{"rv":-8,"tip":3.8354},{"rv":-7,"tip":3.7922},{"rv":-6,"tip":3.8326},{"rv":-5,"tip":3.8472},{"rv":-4,"tip":3.8549},{"rv":-3,"tip":3.8211},{"rv":-2,"tip":3.826},{"rv":-1,"tip":3.8279},{"rv":0,"tip":3.8267},{"rv":1,"tip":3.8479},{"rv":2,"tip":3.8933},{"rv":3,"tip":3.8592},{"rv":4,"tip":3.9005},{"rv":5,"tip":3.8708},{"rv":6,"tip":3.9047},{"rv":7,"tip":3.9567},{"rv":8,"tip":3.8929},{"rv":9,"tip":3.9082},{"rv":10,"tip":3.8585},{"rv":11,"tip":3.8418},{"rv":12,"tip":3.8982},{"rv":13,"tip":3.8957},{"rv":14,"tip":3.8697},{"rv":15,"tip":3.8426},{"rv":16,"tip":3.8625},{"rv":17,"tip":3.9014},{"rv":18,"tip":3.859},{"rv":19,"tip":3.9164},{"rv":20,"tip":3.8951},{"rv":21,"tip":3.8846},{"rv":22,"tip":3.8537},{"rv":23,"tip":3.8631},{"rv":24,"tip":3.8511},{"rv":25,"tip":3.8723},{"rv":26,"tip":3.8598},{"rv":27,"tip":3.9442},{"rv":28,"tip":3.9003},{"rv":29,"tip":3.8683},{"rv":30,"tip":3.8578},{"rv":31,"tip":3.8809},{"rv":32,"tip":3.851},{"rv":33,"tip":3.8791},{"rv":34,"tip":3.869},{"rv":35,"tip":3.8481},{"rv":36,"tip":3.8526},{"rv":37,"tip":3.8305},{"rv":38,"tip":3.9155},{"rv":39,"tip":3.8672},{"rv":40,"tip":3.8665},{"rv":41,"tip":3.8377},{"rv":42,"tip":3.8608},{"rv":43,"tip":3.833},{"rv":44,"tip":3.8697},{"rv":45,"tip":3.8571}],"steps":{"naive":0.389,"cond":0.292,"didisc":0.271,"perdollar":0.108}};
+const css = getComputedStyle(document.documentElement);
+const C = () => ({
+  navy: css.getPropertyValue('--navy').trim() || '#2B5EA7',
+  blue2: css.getPropertyValue('--blue2').trim() || '#8FB4DF',
+  cab: '#F5B301', ink: css.getPropertyValue('--ink').trim() || '#1E2126',
+  mut: css.getPropertyValue('--mut').trim() || '#787E87',
+  grey:'#9AA1A9', rule: css.getPropertyValue('--rule').trim() || '#E4E1D8'
+});
+const S = (tag, at={}) => { const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const k in at) e.setAttribute(k,at[k]); return e; };
+const fmt$ = v => '$'+v.toFixed(2);
+
+/* ---------------- hero simulator ---------------- */
+(function(){
+  const slider=document.getElementById('clockSlider'), clock=document.getElementById('clock');
+  const rush=document.getElementById('rushRow'), total=document.getElementById('total');
+  const b={20:document.getElementById('b20'),25:document.getElementById('b25'),30:document.getElementById('b30')};
+  const rec=document.getElementById('receipt');
+  let after=false;
+  function render(m){
+    const h=Math.floor(m/60), mm=(m%60).toString().padStart(2,'0');
+    clock.textContent=(h>12?h-12:h)+':'+mm+' PM';
+    after = m>=960;
+    rush.classList.toggle('on',after);
+    const base = after?24.20:21.70;
+    total.textContent=fmt$(base);
+    for(const p of [20,25,30]) b[p].textContent=fmt$(base*p/100);
+  }
+  slider.addEventListener('input',e=>{render(+e.target.value); rec.textContent='— press a button —';});
+  document.querySelectorAll('button.tip').forEach(btn=>btn.addEventListener('click',()=>{
+    const p=+btn.dataset.p, base=after?24.20:21.70, tip=base*p/100;
+    const onSur=(after?6.50:4.00)*p/100, onRush=after?2.50*p/100:0;
+    rec.textContent = 'TIP CHARGED           '+fmt$(tip)+'\n'
+      +'  on the fare          '+fmt$(17.70*p/100)+'\n'
+      +'  on surcharges        '+fmt$(onSur)
+      +(after? '\n  … of which the 4 PM surcharge alone: '+fmt$(onRush)+'\nThat last line is the paper.' 
+             : '\nNow drag past 4:00 and press again.');
+  }));
+  render(958);
+})();
+
+/* ---------------- generic chart helpers ---------------- */
+function tooltip(wrap){ const t=document.createElement('div'); t.className='tt'; wrap.appendChild(t); return t; }
+function showTT(t,x,y,html){ t.style.left=x+'px'; t.style.top=y+'px'; t.innerHTML=html; t.style.opacity=1; }
+function hideTT(t){ t.style.opacity=0; }
+
+/* ---------------- spikes ---------------- */
+(function(){
+  const wrap=document.getElementById('spikesWrap');
+  const W=800,H=330,L=46,R=14,T=16,B=40, col=C();
+  const svg=S('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Histogram of tip percentages'});
+  wrap.appendChild(svg); const tt=tooltip(wrap);
+  const x=v=>L+(v-5)/(40-5)*(W-L-R), y=v=>T+(1-v/60)*(H-T-B);
+  for(const g of [0,20,40,60]){ svg.appendChild(S('line',{x1:L,x2:W-R,y1:y(g),y2:y(g),stroke:col.rule,'stroke-width':1}));
+    const lab=S('text',{x:L-8,y:y(g)+4,'text-anchor':'end',class:'axis'}); lab.textContent=g; svg.appendChild(lab); }
+  for(const v of [5,10,15,20,25,30,35,40]){ const lab=S('text',{x:x(v),y:H-14,'text-anchor':'middle',class:'axis'}); lab.textContent=v+'%'; svg.appendChild(lab); }
+  const bars={};
+  DATA.spikes.allin.forEach(d=>{ const r=S('rect',{x:x(d.bin)-4,width:8,y:y(0),height:0,rx:2,fill:col.navy});
+    svg.appendChild(r); bars[d.bin]=r; });
+  const note=S('text',{x:x(21),y:y(57)+4,class:'serlab',fill:col.ink}); svg.appendChild(note);
+  function draw(base){
+    const arr=DATA.spikes[base], m={}; arr.forEach(d=>m[d.bin]=d.sh);
+    for(const bin in bars){ const sh=m[bin]||0, r=bars[bin];
+      r.setAttribute('y',y(sh)); r.setAttribute('height',Math.max(0,y(0)-y(sh)));
+      r.setAttribute('fill', base==='allin' && (bin==20||bin==25||bin==30) ? col.cab : col.navy);
+      if(base==='allin' && bin==20){ r.setAttribute('stroke',col.ink); r.setAttribute('stroke-width',1.2);} else r.removeAttribute('stroke');
+      r.style.transition='y .45s ease, height .45s ease, fill .3s';
+      r.onmousemove=e=>{const bb=wrap.getBoundingClientRect();
+        showTT(tt,e.clientX-bb.left,e.clientY-bb.top,`${bin}% of ${base==='allin'?'all-in total':'fare'} · <b>${(m[bin]||0).toFixed(1)}%</b> of tips`);}
+      r.onmouseleave=()=>hideTT(tt);
+    }
+    note.textContent = base==='allin' ? '57.3% at exactly 20% of the all-in total' : 'the same tips: no bin above 3.6%';
+    note.setAttribute('x', base==='allin'? x(21): x(12)); note.setAttribute('y', base==='allin'? y(57)+4 : y(10));
+  }
+  draw('allin');
+  const A=document.getElementById('tgAllin'), F=document.getElementById('tgFare');
+  A.onclick=()=>{draw('allin');A.setAttribute('aria-pressed','true');F.setAttribute('aria-pressed','false');};
+  F.onclick=()=>{draw('fare');F.setAttribute('aria-pressed','true');A.setAttribute('aria-pressed','false');};
+  document.getElementById('spikesTable').innerHTML =
+    '<table><tr><th>bin %</th><th>÷ all-in</th><th>÷ fare</th></tr>'+
+    DATA.spikes.allin.filter((d,i)=>d.bin%5===0).map(d=>{const f=DATA.spikes.fare.find(q=>q.bin===d.bin);
+      return `<tr><td>${d.bin}</td><td>${d.sh.toFixed(2)}</td><td>${f?f.sh.toFixed(2):''}</td></tr>`;}).join('')+'</table>';
+})();
+
+/* ---------------- 4pm ---------------- */
+(function(){
+  const wrap=document.getElementById('fourpmWrap'); const col=C();
+  const W=800,H=340,L=52,R=14,T=14,B=40;
+  const svg=S('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Mean tip by pickup minute'});
+  wrap.appendChild(svg); const tt=tooltip(wrap);
+  const xs=v=>L+(v+45)/90*(W-L-R), ys=v=>T+(1-(v-2.9)/(5.3-2.9))*(H-T-B);
+  svg.appendChild(S('rect',{x:xs(0)-1,y:T,width:2,height:H-T-B,fill:col.cab}));
+  for(const g of [3.0,3.5,4.0,4.5,5.0]){ svg.appendChild(S('line',{x1:L,x2:W-R,y1:ys(g),y2:ys(g),stroke:col.rule}));
+    const lab=S('text',{x:L-8,y:ys(g)+4,'text-anchor':'end',class:'axis'}); lab.textContent='$'+g.toFixed(2); svg.appendChild(lab); }
+  for(const v of [-45,-30,-15,0,15,30,45]){ const lab=S('text',{x:xs(v),y:H-14,'text-anchor':'middle',class:'axis'});
+    lab.textContent=v===0?'4:00':(v>0?'+'+v:v); svg.appendChild(lab); }
+  const groups=[{reg:1,c:col.navy,lab:'$2.50 regime (2023–24)'},{reg:0,c:col.blue2,lab:'$1.00 regime (2021–22)'}];
+  groups.forEach(g=>{
+    DATA.fourpm.filter(d=>d.reg===g.reg).forEach(d=>{
+      const c=S('circle',{cx:xs(d.rv),cy:ys(d.tip),r:3.4,fill:g.c});
+      c.onmousemove=e=>{const bb=wrap.getBoundingClientRect();
+        showTT(tt,e.clientX-bb.left,e.clientY-bb.top,`${d.rv>=0?'+':''}${d.rv} min · <b>$${d.tip.toFixed(2)}</b>`);}
+      c.onmouseleave=()=>hideTT(tt);
+      svg.appendChild(c);});
+    const last=DATA.fourpm.filter(d=>d.reg===g.reg).slice(-1)[0];
+    const lb=S('text',{x:xs(-44),y:ys(g.reg===1?4.62:3.62),class:'serlab',fill:g.c}); lb.textContent=g.lab; svg.appendChild(lb);
+  });
+  document.getElementById('fourpmTable').innerHTML =
+    '<table><tr><th>min</th><th>$1.00 regime</th><th>$2.50 regime</th></tr>'+
+    [-45,-30,-15,-5,-1,0,5,15,30,45].map(rv=>{const a=DATA.fourpm.find(d=>d.reg===0&&d.rv===rv),b=DATA.fourpm.find(d=>d.reg===1&&d.rv===rv);
+      return `<tr><td>${rv}</td><td>${a?a.tip.toFixed(3):''}</td><td>${b?b.tip.toFixed(3):''}</td></tr>`;}).join('')+'</table>';
+})();
+
+/* ---------------- coefplot ---------------- */
+(function(){
+  const wrap=document.getElementById('coefWrap'); const col=C();
+  const W=800,H=430,L=250,R=30,T=18,B=44;
+  const svg=S('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Estimates per statutory dollar'});
+  wrap.appendChild(svg); const tt=tooltip(wrap);
+  const xs=v=>L+(v+0.18)/(0.36)*(W-L-R);
+  const rows=DATA.coef; const yr=i=>T+18+i*((H-T-B-30)/(rows.length-1));
+  svg.appendChild(S('line',{x1:xs(0),x2:xs(0),y1:T,y2:H-B,stroke:col.mut,'stroke-width':1}));
+  const pl=S('line',{x1:xs(DATA.pooled),x2:xs(DATA.pooled),y1:T,y2:H-B,stroke:col.cab,'stroke-width':2,'stroke-dasharray':'6 5'});
+  svg.appendChild(pl);
+  const pt=S('text',{x:xs(DATA.pooled)+6,y:H-B-6,class:'serlab',fill:col.ink}); pt.textContent='pooled 0.108'; svg.appendChild(pt);
+  for(const v of [-0.1,0,0.1]){ const lab=S('text',{x:xs(v),y:H-16,'text-anchor':'middle',class:'axis'}); lab.textContent=v.toFixed(2); svg.appendChild(lab); }
+  rows.forEach((d,i)=>{
+    const y=yr(i), lo=xs(d.b-1.96*d.se), hi=xs(d.b+1.96*d.se);
+    const color = d.g==='fail'?col.grey : d.g==='jfk'?col.blue2 : col.navy;
+    svg.appendChild(S('line',{x1:lo,x2:hi,y1:y,y2:y,stroke:color,'stroke-width':2.4,'stroke-linecap':'round',class:'cg cg-'+d.g}));
+    let mk;
+    if(d.g==='jfk') mk=S('rect',{x:xs(d.b)-5.5,y:y-5.5,width:11,height:11,fill:color,class:'cg cg-jfk'});
+    else if(d.g==='toll') mk=S('rect',{x:xs(d.b)-6,y:y-6,width:12,height:12,fill:col.navy,transform:`rotate(45 ${xs(d.b)} ${y})`,class:'cg cg-toll'});
+    else if(d.g==='placebo') mk=S('circle',{cx:xs(d.b),cy:y,r:5.5,fill:'none',stroke:col.navy,'stroke-width':2.2,class:'cg cg-placebo'});
+    else mk=S('circle',{cx:xs(d.b),cy:y,r:5.8,fill:color,class:'cg cg-'+d.g});
+    svg.appendChild(mk);
+    const lab=S('text',{x:L-12,y:y+4,'text-anchor':'end',class:'axis cg cg-'+d.g,fill: d.g==='fail'?col.mut:col.ink}); lab.textContent=d.lab; svg.appendChild(lab);
+    const hit=S('rect',{x:0,y:y-11,width:W,height:22,fill:'transparent'});
+    hit.onmousemove=e=>{const bb=wrap.getBoundingClientRect();
+      showTT(tt,e.clientX-bb.left,e.clientY-bb.top,`${d.lab}<br><b>${d.b.toFixed(3)}</b> per statutory $ · SE ${d.se.toFixed(3)}`);}
+    hit.onmouseleave=()=>hideTT(tt);
+    svg.appendChild(hit);
+  });
+  document.getElementById('coefTable').innerHTML='<table><tr><th>design</th><th>per $</th><th>SE</th></tr>'+
+    rows.map(d=>`<tr><td>${d.lab}</td><td>${d.b.toFixed(3)}</td><td>${d.se.toFixed(3)}</td></tr>`).join('')+'</table>';
+})();
+
+/* ---------------- dec22 ---------------- */
+(function(){
+  const wrap=document.getElementById('decWrap'); const col=C();
+  const W=800,H=320,L=52,R=120,T=16,B=40;
+  const svg=S('svg',{viewBox:`0 0 ${W} ${H}`}); wrap.appendChild(svg); const tt=tooltip(wrap);
+  const xs=v=>L+(v+15)/27*(W-L-R), ys=v=>T+(1-(v-17.2)/(19.2-17.2))*(H-T-B);
+  svg.appendChild(S('rect',{x:xs(0)-1,y:T,width:2,height:H-T-B,fill:col.cab}));
+  for(const g of [17.5,18,18.5,19]){ svg.appendChild(S('line',{x1:L,x2:W-R,y1:ys(g),y2:ys(g),stroke:col.rule}));
+    const lab=S('text',{x:L-8,y:ys(g)+4,'text-anchor':'end',class:'axis'}); lab.textContent=g.toFixed(1)+'%'; svg.appendChild(lab); }
+  for(const v of [-15,-10,-5,0,5,10]){ const lab=S('text',{x:xs(v),y:H-14,'text-anchor':'middle',class:'axis'}); lab.textContent=v; svg.appendChild(lab); }
+  const mkpath=(g)=>{const pts=DATA.dec22.filter(d=>d.g===g).sort((a,b)=>a.w-b.w);
+    return {d:'M'+pts.map(p=>xs(p.w)+','+ys(p.rate)).join('L'), pts};};
+  const rr=mkpath('rush'), pp=mkpath('pre');
+  svg.appendChild(S('path',{d:pp.d,fill:'none',stroke:col.blue2,'stroke-width':2.4,'stroke-dasharray':'5 4'}));
+  svg.appendChild(S('path',{d:rr.d,fill:'none',stroke:col.navy,'stroke-width':2.6}));
+  // full-attention benchmark: pre-period rush mean minus 1.1
+  const preMean = rr.pts.filter(p=>p.w<0).reduce((s,p)=>s+p.rate,0)/rr.pts.filter(p=>p.w<0).length;
+  const bench=preMean-1.1;
+  svg.appendChild(S('line',{x1:xs(0),x2:W-R,y1:ys(bench),y2:ys(bench),stroke:col.ink,'stroke-width':1.4,'stroke-dasharray':'2 4'}));
+  const bl=S('text',{x:W-R+6,y:ys(bench)+4,class:'serlab',fill:col.ink}); bl.textContent='full attention'; svg.appendChild(bl);
+  const l1=S('text',{x:W-R+6,y:ys(rr.pts.slice(-1)[0].rate)+4,class:'serlab',fill:col.navy}); l1.textContent='rush window'; svg.appendChild(l1);
+  const l2=S('text',{x:W-R+6,y:ys(pp.pts.slice(-1)[0].rate)+4,class:'serlab',fill:col.blue2}); l2.textContent='pre-rush (no surcharge)'; svg.appendChild(l2);
+  [...rr.pts,...pp.pts].forEach(p=>{const c=S('circle',{cx:xs(p.w),cy:ys(p.rate),r:6,fill:'transparent'});
+    c.onmousemove=e=>{const bb=wrap.getBoundingClientRect();
+      showTT(tt,e.clientX-bb.left,e.clientY-bb.top,`week ${p.w} · <b>${p.rate.toFixed(2)}%</b>`);}
+    c.onmouseleave=()=>hideTT(tt); svg.appendChild(c);});
+  document.getElementById('decTable').innerHTML='<table><tr><th>week</th><th>rush %</th><th>pre-rush %</th></tr>'+
+    rr.pts.map(p=>{const q=pp.pts.find(z=>z.w===p.w);return `<tr><td>${p.w}</td><td>${p.rate.toFixed(2)}</td><td>${q?q.rate.toFixed(2):''}</td></tr>`;}).join('')+'</table>';
+})();
+
+/* ---------------- dose ---------------- */
+(function(){
+  const wrap=document.getElementById('doseWrap'); const col=C();
+  const W=800,H=300,L=60,R=20,T=16,B=52;
+  const svg=S('svg',{viewBox:`0 0 ${W} ${H}`}); wrap.appendChild(svg); const tt=tooltip(wrap);
+  const xs=i=>L+(i+0.5)*(W-L-R)/4, ys=v=>T+(1-(v+0.01)/(0.115))*(H-T-B);
+  for(const g of [0,0.03,0.06,0.09]){ svg.appendChild(S('line',{x1:L,x2:W-R,y1:ys(g),y2:ys(g),stroke:col.rule}));
+    const lab=S('text',{x:L-8,y:ys(g)+4,'text-anchor':'end',class:'axis'}); lab.textContent='$'+g.toFixed(2); svg.appendChild(lab); }
+  svg.appendChild(S('line',{x1:L,x2:W-R,y1:ys(0),y2:ys(0),stroke:col.mut}));
+  DATA.dose.forEach((d,i)=>{
+    if(d.se>0) svg.appendChild(S('line',{x1:xs(i),x2:xs(i),y1:ys(d.b-1.96*d.se),y2:ys(d.b+1.96*d.se),stroke:col.navy,'stroke-width':2.4,'stroke-linecap':'round'}));
+    const c=S('circle',{cx:xs(i),cy:ys(d.b),r:7,fill: i===0?'none':col.navy, stroke:col.navy,'stroke-width':2.2});
+    c.onmousemove=e=>{const bb=wrap.getBoundingClientRect();
+      showTT(tt,e.clientX-bb.left,e.clientY-bb.top,`${d.lab} · <b>$${d.b.toFixed(3)}</b>${d.se?` · SE ${d.se.toFixed(3)}`:''}`);}
+    c.onmouseleave=()=>hideTT(tt); svg.appendChild(c);
+    const lab=S('text',{x:xs(i),y:H-22,'text-anchor':'middle',class:'axis'}); lab.textContent=d.lab; svg.appendChild(lab);
+  });
+})();
+
+/* ---------------- fee dial ---------------- */
+(function(){
+  const s=document.getElementById('feeSlider'), fv=document.getElementById('feeval');
+  const rFee=document.getElementById('rFee'), rMTA=document.getElementById('rMTA'),
+        rTips=document.getElementById('rTips'), rCost=document.getElementById('rCost');
+  const VOL=22.1e6;
+  function upd(){
+    const f=+s.value;
+    fv.textContent=fmt$(f); rFee.textContent=fmt$(f);
+    rMTA.textContent='$'+(f*VOL/1e6).toFixed(1)+'M';
+    rTips.textContent='$'+(0.108*f*VOL/1e6).toFixed(1)+'–'+(0.150*f*VOL/1e6).toFixed(1)+'M';
+    rCost.textContent=fmt$(f*1.108)+'–'+fmt$(f*1.150).slice(1);
+  }
+  s.addEventListener('input',upd); upd();
+})();
+
+
+/* stat strip count-up */
+(function(){
+  const els=[...document.querySelectorAll('#statstrip .n')];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function final(el){const t=+el.dataset.t,dec=+(el.dataset.dec||0);
+    el.textContent=(el.dataset.pre||'')+t.toFixed(dec); 
+    if(el.dataset.suf){const u=document.createElement('span');u.className='u';u.textContent=el.dataset.suf;el.appendChild(u);} }
+  function run(el){const t=+el.dataset.t,dec=+(el.dataset.dec||0),t0=performance.now();
+    function f(now){const p=Math.min(1,(now-t0)/1100),v=t*(1-Math.pow(1-p,3));
+      el.textContent=(el.dataset.pre||'')+v.toFixed(dec);
+      if(p<1) requestAnimationFrame(f); else final(el);}
+    requestAnimationFrame(f);}
+  if(reduce){els.forEach(final);return;}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){run(e.target);io.unobserve(e.target);}}),{threshold:.5});
+  els.forEach(e=>io.observe(e));
+})();
+
+/* how-the-estimate stepper */
+(function(){
+  const wrap=document.getElementById('howWrap'); if(!wrap) return;
+  const col=C(), W=800,H=330,L=52,R=14,T=14,B=40;
+  const svg=S('svg',{viewBox:`0 0 ${W} ${H}`}); wrap.appendChild(svg);
+  const xs=v=>L+(v+45)/90*(W-L-R), ys=v=>T+(1-(v-2.9)/(5.3-2.9))*(H-T-B);
+  svg.appendChild(S('rect',{x:xs(0)-1,y:T,width:2,height:H-T-B,fill:col.cab}));
+  for(const g of [3.0,3.5,4.0,4.5,5.0]){svg.appendChild(S('line',{x1:L,x2:W-R,y1:ys(g),y2:ys(g),stroke:col.rule}));
+    const lb=S('text',{x:L-8,y:ys(g)+4,'text-anchor':'end',class:'axis'});lb.textContent='$'+g.toFixed(2);svg.appendChild(lb);}
+  for(const v of [-45,-30,-15,0,15,30,45]){const lb=S('text',{x:xs(v),y:H-14,'text-anchor':'middle',class:'axis'});
+    lb.textContent=v===0?'4:00':(v>0?'+'+v:v);svg.appendChild(lb);}
+  const wd=DATA.fourpm.filter(d=>d.reg===1);
+  wd.forEach(d=>svg.appendChild(S('circle',{cx:xs(d.rv),cy:ys(d.tip),r:3.4,fill:col.navy})));
+  const wdlab=S('text',{x:xs(-44),y:ys(4.62),class:'serlab',fill:col.navy});wdlab.textContent='weekdays';svg.appendChild(wdlab);
+  // weekend layer (hidden until step 3)
+  const weG=S('g',{opacity:0}); svg.appendChild(weG);
+  DATA.fourpmWE.forEach(d=>weG.appendChild(S('circle',{cx:xs(d.rv),cy:ys(d.tip),r:3.2,fill:col.blue2})));
+  const welab=S('text',{x:xs(-44),y:ys(3.30),class:'serlab',fill:col.blue2});welab.textContent='weekends — same clock, no surcharge';weG.appendChild(welab);
+  // confound annotation (step 2)
+  const cfG=S('g',{opacity:0}); svg.appendChild(cfG);
+  const arr=S('text',{x:xs(18),y:ys(5.05),class:'serlab',fill:col.ink});arr.textContent='⚠ fares jump $0.49 here too';cfG.appendChild(arr);
+  const num=document.getElementById('howNum'), txt=document.getElementById('howTxt');
+  const steps={
+    1:{n:'$0.389',t:'Compare weekday trips just before and after 4:00 PM ($2.50 regime): tips jump <b>$0.389</b>. Tempting — but not causal yet.',we:0,cf:0},
+    2:{n:'$0.292',t:'Rush hour makes trips slower and dearer — the metered fare itself jumps <b>$0.49</b> at 4:00. Conditioning on the non-surcharge base removes that channel: <b>$0.292</b>.',we:0,cf:1},
+    3:{n:'$0.271',t:'Weekends face the same 4:00 PM — with <b>no surcharge</b>. Difference the two steps (difference-in-discontinuities): <b>$0.271</b>. Drop every control and it moves a cent — the counterfactual does the work.',we:1,cf:1},
+    4:{n:'0.108<span class="per"> per $</span>',t:'Divide by the statutory $2.50: <b>ρ ≈ 0.108</b> — eleven cents per legislated dollar. Same answer at every dose $0.50–$5.00, on JFK flat fares with no controls, and at the toll&rsquo;s spatial boundary.',we:1,cf:1}
+  };
+  const btns=[...document.querySelectorAll('.stepper button')];
+  function go(k){const st=steps[k];
+    num.innerHTML=st.n; txt.innerHTML=st.t;
+    weG.setAttribute('opacity',st.we); cfG.setAttribute('opacity',st.cf);
+    btns.forEach(b=>b.setAttribute('aria-current', b.dataset.step==k ? 'true':'false'));}
+  btns.forEach(b=>b.addEventListener('click',()=>go(b.dataset.step)));
+  go(1);
+})();
+
+/* roads chips ↔ coefplot */
+(function(){
+  const roads=document.getElementById('roads'); if(!roads) return;
+  const note=document.getElementById('roadnote');
+  const notes={all:'Six legislated switches at three clocks, two doses, both directions.',
+    clock:'Same trips minutes apart — anything slow-moving (norms, seasons, composition trends) cannot explain a step at an exact statutory minute.',
+    jfk:'The JFK fare is flat, so the fare-jump confound cannot exist by construction. Same answer with no controls at all: 0.149 at a $5.00 dose.',
+    toll:'No clock anywhere — identification from the 60th St boundary in space. Lands at 0.107 against the clocks&rsquo; pooled 0.108.',
+    falsif:'Where the design must find nothing, it does (weekend placebos ≈ 0); where it must fail, it does and we can say why (6 AM weekday dawn composition).'};
+  const wrap=document.getElementById('coefWrap');
+  function apply(g){
+    wrap.querySelectorAll('.cg').forEach(el=>{
+      const keep = g==='all' || el.classList.contains('cg-'+g) ||
+        (g==='falsif' && (el.classList.contains('cg-fail')||el.classList.contains('cg-placebo')));
+      el.style.opacity = keep ? 1 : 0.15;});
+    note.innerHTML=notes[g];
+    roads.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.g===g?'true':'false'));}
+  roads.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('mouseenter',()=>apply(b.dataset.g));
+    b.addEventListener('focus',()=>apply(b.dataset.g));
+    b.addEventListener('click',()=>apply(b.dataset.g));});
+  roads.addEventListener('mouseleave',()=>apply(document.querySelector('#roads [aria-pressed="true"]').dataset.g));
+})();
+
+/* cab route animation */
+(function(){
+  const cv=document.getElementById('cabCanvas'); if(!cv) return;
+  const ctx=cv.getContext('2d'); const W=860,H=330;
+  const feeEl=document.getElementById('cabFee'), tipEl=document.getElementById('cabTip');
+  const tollY=200; // 60th St
+  const route=[[70,40],[70,120],[250,120],[250,tollY],[250,258],[470,258],[470,296],[700,296]];
+  const segs=[]; let total=0;
+  for(let i=0;i<route.length-1;i++){const dx=route[i+1][0]-route[i][0],dy=route[i+1][1]-route[i][1];
+    const len=Math.hypot(dx,dy); segs.push({a:route[i],b:route[i+1],len,c0:total}); total+=len;}
+  let fee=0,tip=0,crossed=false,flash=0;
+  function draw(t){
+    ctx.fillStyle='#14161A'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='#242830'; ctx.lineWidth=1;
+    for(let x=70;x<W-40;x+=90){ctx.beginPath();ctx.moveTo(x,24);ctx.lineTo(x,H-18);ctx.stroke();}
+    for(let y=40;y<H-14;y+=38){ctx.beginPath();ctx.moveTo(50,y);ctx.lineTo(W-40,y);ctx.stroke();}
+    ctx.fillStyle='rgba(245,179,1,0.06)'; ctx.fillRect(50,tollY,W-90,H-18-tollY);
+    ctx.setLineDash([10,7]); ctx.strokeStyle=flash>0?'#FFE082':'#F5B301'; ctx.lineWidth=flash>0?3.5:2;
+    ctx.beginPath();ctx.moveTo(50,tollY);ctx.lineTo(W-40,tollY);ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='#F5B301'; ctx.font='600 12px system-ui'; ctx.fillText('60th St — $0.75 toll line',56,tollY-8);
+    ctx.fillStyle='#7A828E'; ctx.fillText('CBD (tolled zone)',56,H-28);
+    // route
+    ctx.strokeStyle='rgba(143,180,223,0.5)'; ctx.lineWidth=3; ctx.beginPath();
+    ctx.moveTo(route[0][0],route[0][1]); route.slice(1).forEach(p=>ctx.lineTo(p[0],p[1])); ctx.stroke();
+    // cab position
+    const d=(t*90)%total;
+    let seg=segs.find(s2=>d>=s2.c0 && d<=s2.c0+s2.len)||segs[0];
+    const f=(d-seg.c0)/seg.len;
+    const x=seg.a[0]+(seg.b[0]-seg.a[0])*f, y=seg.a[1]+(seg.b[1]-seg.a[1])*f;
+    if(!crossed && y>=tollY && d<total*0.6){crossed=true;flash=1;fee+=0.75;tip+=0.75*0.117;
+      feeEl.textContent='$'+fee.toFixed(2); tipEl.textContent='$'+tip.toFixed(2);}
+    if(d<40 && crossed){crossed=false;} // loop reset
+    if(flash>0) flash-=0.02;
+    ctx.fillStyle='#F5B301'; ctx.strokeStyle='#0C0E12'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.roundRect(x-11,y-7,22,14,4); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#0C0E12'; ctx.fillRect(x-4,y-4,8,8);
+  }
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){draw(2.2);return;}
+  let start;
+  function loop(ts){if(start===undefined)start=ts; draw((ts-start)/1000); requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+})();
+
+/* reveal on scroll */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));return;}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+})();
+</script>
