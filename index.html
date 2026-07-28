@@ -345,6 +345,68 @@ estimate per statutory dollar, 0.108 (SE 0.001).</p>
   <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">The stepper reproduces the paper&rsquo;s estimating equation: T = &alpha; + &pi;D + &omega;W + &delta;(D&times;W) + &gamma;B + f(r)&times;W + &epsilon;, where D indicates minutes past the cutoff, W indicates weekdays, B is the non-surcharge base, and f(r) is a local-linear trend in pickup minute on each side, separately by day type. Cells are weighted by card trips and standard errors are clustered by date; the bandwidth is &plusmn;60 minutes. The headline divides &delta; by the statutory dose. Source: 22_coefplot.do, logged in logs/coefplot.log.</p></details>
 </section>
 
+
+<section class="block reveal" id="students">
+  <div class="prose">
+    <div class="kicker"><span class="dot"></span><span class="eyebrow">For econometrics students</span></div>
+    <h2>The methods you are learning, applied</h2>
+    <p style="margin-top:12px">This paper is an application of the standard causal-inference toolkit.
+    Each card names a course concept, states where it appears here, and notes the practical lesson.</p>
+  </div>
+  <div class="litgrid">
+    <div class="lit"><div class="who">Estimands: ITT and treatment effects</div><div class="venue">Potential outcomes</div>
+      <dl><dt>In this paper</dt><dd>&rho; = &part;E[tip]/&part;surcharge. The headline is an intention-to-treat
+      effect: the reduced-form jump divided by the <em>statutory</em> dose, a constant written in the rule.</dd>
+      <dt>What to notice</dt><dd>Scaling by a known constant needs no first stage and no exclusion
+      restriction. When the recorded treatment is mismeasured, ITT per statutory unit is the defensible object
+      (<a href="#parameter">Section: estimates</a>).</dd></dl></div>
+    <div class="lit"><div class="who">RD and difference-in-discontinuities</div><div class="venue">Design-based identification</div>
+      <dl><dt>In this paper</dt><dd>Assignment is sharp in the running variable (pickup minute), but covariate
+      continuity fails: fares jump $0.49 at 4:00 PM. The design differences the cutoff jump against weekends
+      and exempt holidays, where the statute does not bind.</dd>
+      <dt>What to notice</dt><dd>A failed balance table need not kill a discontinuity design; a second
+      difference can absorb what the cutoff shares with untreated days
+      (<a href="#how">Section: constructing the estimate</a>).</dd></dl></div>
+    <div class="lit"><div class="who">Bad controls</div><div class="venue">Regression mechanics</div>
+      <dl><dt>In this paper</dt><dd>Specifications control the <em>non-surcharge</em> base, never the all-in
+      total. The all-in total contains the surcharge, so conditioning on it would absorb the treatment.</dd>
+      <dt>What to notice</dt><dd>The textbook bad-control problem arises naturally: one of our own first
+      drafts conditioned on the wrong base and attenuated every estimate. Decide what is post-treatment
+      before choosing controls.</dd></dl></div>
+    <div class="lit"><div class="who">IV, 2SLS, and the exclusion restriction</div><div class="venue">Instrumental variables</div>
+      <dl><dt>In this paper</dt><dd>The fuzzy design instruments the recorded surcharge with cutoff &times;
+      weekday: first stage 1.934 (0.011), reduced form 0.271 (0.008), 2SLS 0.140 (0.004), interpreted as an
+      average causal response (Angrist and Imbens 1995).</dd>
+      <dt>What to notice</dt><dd>The exclusion restriction requires the entire jump in the meter field to be
+      rush surcharge. The field is contaminated, so the paper reports the IV but does not headline it. State
+      what your instrument assumes; demote it when the assumption is unverifiable.</dd></dl></div>
+    <div class="lit"><div class="who">Parallel trends and pre-trend testing</div><div class="venue">Difference-in-differences</div>
+      <dl><dt>In this paper</dt><dd>The toll event study looks flat month by month, yet a joint Wald test on
+      the twelve pre-period coefficients rejects (p = 0.0007).</dd>
+      <dt>What to notice</dt><dd>Eyeballing pre-trends is not a test. Test jointly, report the rejection, and
+      support the design with evidence that drift cannot mimic, here the dose gradient
+      (<a href="#toll">Section: the toll</a>).</dd></dl></div>
+    <div class="lit"><div class="who">Falsification and placebo tests</div><div class="venue">Design credibility</div>
+      <dl><dt>In this paper</dt><dd>Weekend placebos are null on both stages; none of 60 bandwidth-matched
+      permutation cutoffs reaches the estimate; and the design fails exactly where composition predicts it
+      should (6 AM weekdays), while its weekend twin is normal.</dd>
+      <dt>What to notice</dt><dd>A predicted failure is evidence the assumptions bind. Reporting it in grey is
+      more convincing than omitting it.</dd></dl></div>
+    <div class="lit"><div class="who">Clustered inference and power</div><div class="venue">Inference</div>
+      <dl><dt>In this paper</dt><dd>Standard errors cluster by date (449 clusters) and by pickup zone for the
+      toll; the holiday design has few clusters, so inference uses the wild cluster bootstrap. Minimum
+      detectable effects (2.8 &times; SE) are reported for every design: 0.005 to 0.039 per dollar.</dd>
+      <dt>What to notice</dt><dd>Choose the cluster level from the assignment mechanism, switch to bootstrap
+      methods when clusters are few, and report MDEs so null results are interpretable.</dd></dl></div>
+    <div class="lit"><div class="who">Dose response and heterogeneity</div><div class="venue">Mechanisms</div>
+      <dl><dt>In this paper</dt><dd>Statutory doses run from $0.50 to $5.00 and the estimate is stable, which
+      licenses the policy dial. Splitting tips by how they were chosen shows button and custom tips carry the
+      effect while whole-dollar tips are inert at either dose.</dd>
+      <dt>What to notice</dt><dd>Dose variation converts one estimate into a function; heterogeneity by
+      choice type is how a reduced form becomes a mechanism.</dd></dl></div>
+  </div>
+</section>
+
 <section class="block reveal" id="parameter">
   <div class="prose">
     <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact three · one parameter</span></div>
