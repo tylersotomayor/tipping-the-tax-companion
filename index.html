@@ -275,6 +275,9 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <div class="stat"><div class="n" data-t="210" data-pre="$" data-suf="M">0</div><div class="l">of non-fare dollars enter tip bases every year on card trips</div></div>
   <div class="stat"><div class="n" data-t="11" data-suf="¢" data-u="1">0</div><div class="l">of every statutory surcharge dollar becomes tip (the paper&rsquo;s estimate)</div></div>
 </div>
+<p class="note" style="max-width:900px;margin:10px auto 0">Sources, in order: card trips in the estimation windows
+(descriptive table of the paper); the June-2025 base test; annualized 2025H1 component totals on card trips; the pooled
+estimate per statutory dollar, 0.108 (SE 0.001).</p>
 </section>
 
 <section class="block reveal" id="base">
@@ -294,6 +297,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   </div>
   <p class="figcap"><b>Against the all-in total, 57.3% of tips sit at exactly 20%</b>, with further spikes at 25 and 30, the three buttons. Against the fare alone, the same tips scatter; no bin holds more than 3.6%. Tipping is organized by the base the buttons use.</p>
   <details class="dtab"><summary>Data table</summary><div id="spikesTable"></div></details>
+  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">Sample: June 2025 yellow-cab trips, standard rate (RatecodeID 1), credit-card payment, metered fare $3&ndash;200, positive tip, zero recorded tolls (2.18M trips). For each trip the tip is divided by (a) the all-in pre-tip total (total_amount &minus; tip_amount) and (b) the metered fare; ratios are binned in half-percentage-point bins over 5&ndash;40%. Bars show each bin&rsquo;s share of trips. &ldquo;Exactly 20%&rdquo; means equality within half a cent. Source: build_spikes.py; Figure 3 of the paper.</p></details>
 </section>
 
 <section class="block reveal" id="experiment">
@@ -311,6 +315,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <p class="figcap">The legislature repriced the surcharge from <b>$1.00 to $2.50</b> on December 19, 2022, and the step at 4:00 grew with the dose. Per statutory
   dollar the pooled estimate is <b>0.108 (SE 0.001)</b>; dropping every control moves it about a cent.</p>
   <details class="dtab"><summary>Data table</summary><div id="fourpmTable"></div></details>
+  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">Points are trip-weighted mean credit-card tips by minute of pickup: weekdays excluding legal holidays, September 2021 to September 2024, standard-rate card trips aggregated to date-by-minute cells. The series split at December 19, 2022, when the statutory dose changed from $1.00 to $2.50. No smoothing is applied. Cells: build_cells_v3.py.</p></details>
 </section>
 
 
@@ -337,6 +342,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
       regime: tips jump <b>$0.389</b>. This estimate is not yet causal.</div>
     </div>
   </div>
+  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">The stepper reproduces the paper&rsquo;s estimating equation: T = &alpha; + &pi;D + &omega;W + &delta;(D&times;W) + &gamma;B + f(r)&times;W + &epsilon;, where D indicates minutes past the cutoff, W indicates weekdays, B is the non-surcharge base, and f(r) is a local-linear trend in pickup minute on each side, separately by day type. Cells are weighted by card trips and standard errors are clustered by date; the bandwidth is &plusmn;60 minutes. The headline divides &delta; by the statutory dose. Source: 22_coefplot.do, logged in logs/coefplot.log.</p></details>
 </section>
 
 <section class="block reveal" id="parameter">
@@ -363,6 +369,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <b>0.149</b> with <b>no controls at all</b>. The one failure (6&nbsp;AM weekdays) has a diagnosis: dawn
   airport composition, and its weekend twin behaves.</p>
   <details class="dtab"><summary>Data table</summary><div id="coefTable"></div></details>
+  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">Clock rows: the reduced-form jump at each cutoff from a local-linear regression in pickup minute (bandwidth &plusmn;60), conditioning on the non-surcharge base, weighted by card trips, clustered by date, then divided by the statutory dose. JFK squares: the identical specification on RatecodeID-2 flat fares at doses of $4.50 and $5.00; because the fare is flat, the estimate is unchanged without any controls. Toll diamond: an origin&ndash;destination difference-in-differences (a trip is eligible if pickup or dropoff lies in the zone) with route and month fixed effects, clustered by pickup zone; the coefficient $0.080 (0.005) is divided by the $0.75 statutory toll. Hollow circles: weekend placebo steps divided by the matched regime&rsquo;s dose. Grey: the 6&nbsp;AM weekday cutoff, where the dawn shift toward airport traffic breaks the fare conditioning; its weekend twin is normal. The dashed line is the precision-weighted mean of the six primary changes. Source: logs/coefplot.log.</p></details>
 </section>
 
 <section class="block reveal" id="notice">
@@ -380,6 +387,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   through, immediately and permanently. The one-fifth that didn&rsquo;t? Almost entirely the round-dollar
   tippers ("$5 every time"), whose tips don&rsquo;t scale with the bill by construction.</p>
   <details class="dtab"><summary>Data table</summary><div id="decTable"></div></details>
+  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">Weekly tip rate = the sum of card tips divided by the sum of pre-tip totals, weekdays, computed separately for the rush window (minutes 960&ndash;1050) and the surcharge-free pre-rush window (870&ndash;955), for weeks &minus;15 to +12 around December 19, 2022. The benchmark line: holding tip dollars fixed while the base rises $1.50 implies a 1.1-point decline in the rate. The 0.22-point estimate nets the pre-rush series from the rush series; the paper&rsquo;s regression version clusters by date. Source: 17_lp_dec22.do and the cells above.</p></details>
 </section>
 
 
@@ -437,6 +445,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   </div>
   <p class="figcap">Zone drift would have to reproduce this gradient by coincidence. In the paper, the
   district also <b>emerges on a map</b> at the true toll date and not at a placebo date.</p>
+  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">Routes are pickup&ndash;dropoff zone pairs. The dose is the share of a route&rsquo;s post-period trips actually charged the fee, measured from recorded fee incidence (February to June 2025). Effects come from a regression of route-month mean tips on post-period dose-bin indicators (relative to routes charged under 10%), with route and month fixed effects and the non-surcharge base as a control, weighted by card trips and clustered by pickup zone. Source: 14_final_analyses.do.</p></details>
 </section>
 
 <!-- ============================== DIAL ============================== -->
@@ -466,9 +475,13 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
       <div class="eyebrow">Set the toll</div>
       <div class="feeval" id="feeval">$0.75</div>
       <input id="feeSlider" type="range" min="0" max="5" step="0.25" value="0.75" aria-label="Toll per trip in dollars">
-      <p class="note" style="margin-top:12px">Tips range uses ρ = 0.108 (per statutory dollar, pooled) to
-      0.150 (per recorded dollar). Volume held at the 2025 toll&rsquo;s charged card trips; dose-linearity is
-      tested in the paper up to $5.00. The actual 2025 toll is $0.75. The 2019 congestion surcharge, still in force at $2.50, moves about <span class="mono">$8–11M</span> a year by itself.</p>
+      <p class="note" style="margin-top:12px">Arithmetic: induced tips = &rho; &times; fee &times; charged card
+      trips, with volume held at the 2025 toll&rsquo;s observed 22.1M charged card trips per year; rider cost per trip =
+      fee &times; (1 + &rho;). The bounds use &rho; = 0.108 (the pooled estimate per statutory dollar) and 0.150 (per
+      recorded dollar, the aggregation-consistent rate for collected fees). Dose linearity is estimated in the paper up
+      to $5.00; holding volume fixed is consistent with the estimated demand response of &minus;1.0% (SE 0.9). The
+      actual 2025 toll is $0.75. The 2019 congestion surcharge, still in force at $2.50, moves about
+      <span class="mono">$8&ndash;11M</span> a year by itself.</p>
     </div>
   </div>
 </section>
