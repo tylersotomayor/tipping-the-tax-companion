@@ -195,18 +195,15 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <div class="wrap">
     <div class="eyebrow">An interactive companion to the working paper · Columbia University · July 2026</div>
     <h1>Tipping the Tax</h1>
-    <p class="sub">New York taxi screens compute suggested tips on the <em>all-in</em> total — a total
-    that includes every government surcharge on the meter. When policy adds a fee, every
-    suggested tip rises with it. Try it yourself.</p>
+    <p class="sub">New York taxi screens compute suggested tips on the <em>all-in</em> total, which includes every government surcharge on the meter. When policy adds a fee, every suggested tip rises with it.</p>
     <div class="authors">Tyler Sotomayor · Gabriel Uceda-Sosa</div>
 
     <div class="sim">
       <div class="simside">
         <div class="eyebrow">The experiment, in your hand</div>
         <h2>Drag the pickup time past 4:00&nbsp;PM.</h2>
-        <p>At exactly 4:00 on weekdays, the $2.50 rush-hour surcharge switches on — assigned by
-        the <strong style="color:#fff">pickup minute</strong>. Nothing about the ride, the driver,
-        or your regard for them changes. Watch what happens to the suggested tips.</p>
+        <p>At exactly 4:00 on weekdays, the $2.50 rush-hour surcharge switches on, assigned by
+        the <strong style="color:#fff">pickup minute</strong>. Nothing about the ride or the driver changes. The suggested tips update on their own.</p>
         <div class="slider">
           <input id="clockSlider" type="range" min="940" max="980" value="958"
             aria-label="Pickup time, minutes since midnight">
@@ -242,20 +239,17 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     <div class="kicker"><span class="dot"></span><span class="eyebrow">The question</span></div>
     <h2>When a statute puts a dollar on the meter, how much crosses into the tip?</h2>
     <p class="lede" style="margin-top:14px">A tip is a voluntary payment for service. The surcharge changes
-    nothing about the service — so economic theory says the answer should be
-    <strong>zero</strong>. Pure button arithmetic says <strong>seventeen cents</strong> (the average tip
-    rate). The whole paper lives between those two numbers.</p>
+    nothing about the service, so economic theory says the answer should be
+    <strong>zero</strong>. Pure button arithmetic says <strong>seventeen cents</strong>, the average tip rate. The estimates lie between these benchmarks.</p>
     <p>What we find: <span class="hl"><strong>about eleven cents of every statutory surcharge dollar
-    becomes tip</strong></span>; among trips the meter actually charges, fourteen cents per surcharge
-    dollar — about four-fifths of the rate at which riders tip the fare itself. They don&rsquo;t switch to cash, don&rsquo;t re-time their hails, and when the surcharge was
-    repriced 150% overnight, they undid about a fifth of it. The interface performs the inattention.</p>
+    becomes tip</strong></span>; among trips the meter actually charges, fourteen cents per surcharge dollar, about four-fifths of the rate at which riders tip the fare itself. Riders do not switch to cash or re-time their hails, and when the surcharge was repriced 150% overnight they undid about a fifth of it.</p>
   </div>
 
 <div class="stats reveal" id="statstrip">
   <div class="stat"><div class="n" data-t="43" data-suf="M">0</div><div class="l">standard-rate card trips in the clock windows, Sep 2021–Sep 2024</div></div>
   <div class="stat"><div class="n" data-t="57.3" data-dec="1" data-suf="%">0</div><div class="l">of June-2025 tips sit at <em>exactly</em> 20% of the all-in total</div></div>
   <div class="stat"><div class="n" data-t="210" data-pre="$" data-suf="M">0</div><div class="l">of non-fare dollars enter tip bases every year on card trips</div></div>
-  <div class="stat"><div class="n" data-t="11" data-suf="¢" data-u="1">0</div><div class="l">of every statutory surcharge dollar becomes tip — the paper&rsquo;s estimate</div></div>
+  <div class="stat"><div class="n" data-t="11" data-suf="¢" data-u="1">0</div><div class="l">of every statutory surcharge dollar becomes tip (the paper&rsquo;s estimate)</div></div>
 </div>
 </section>
 
@@ -263,8 +257,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <div class="prose">
     <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact one · the base</span></div>
     <h2>Which base do tips follow?</h2>
-    <p style="margin-top:12px">Take every credit-card tip in June 2025 — 2.18 million of them — and ask:
-    what number is each tip a percentage <em>of</em>? Toggle between the two candidates.</p>
+    <p style="margin-top:12px">Take the 2.18 million credit-card tips of June 2025 and ask what number each tip is a percentage <em>of</em>. Toggle between the two candidates.</p>
   </div>
   <div class="fig">
     <p class="ftitle">Share of tips at each half-point percentage</p>
@@ -275,9 +268,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     </div>
     <div class="figwrap" id="spikesWrap"></div>
   </div>
-  <p class="figcap"><b>Against the all-in total, 57.3% of tips sit at exactly 20%</b> — with spikes at 25
-  and 30, the three buttons. Against the fare alone, the same tips scatter: no bin above 3.6%. The
-  buttons&rsquo; base — and only the buttons&rsquo; base — organizes tipping.</p>
+  <p class="figcap"><b>Against the all-in total, 57.3% of tips sit at exactly 20%</b>, with further spikes at 25 and 30, the three buttons. Against the fare alone, the same tips scatter; no bin holds more than 3.6%. Tipping is organized by the base the buttons use.</p>
   <details class="dtab"><summary>Data table</summary><div id="spikesTable"></div></details>
 </section>
 
@@ -286,16 +277,14 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact two · the experiment</span></div>
     <h2>Tips increase at the minute the surcharge takes effect</h2>
     <p style="margin-top:12px">The rush surcharge is assigned by the pickup minute, so trips minutes apart
-    face different tip bases. Because fares also drift at rush hour, the estimates difference the 4:00&nbsp;PM
-    jump against weekends and exempt holidays — where the same clock carries no surcharge.</p>
+    face different tip bases. Because fares also drift at rush hour, the estimates difference the 4:00&nbsp;PM jump against weekends and exempt holidays, where the same clock carries no surcharge.</p>
   </div>
   <div class="fig">
     <p class="ftitle">Mean credit-card tip by pickup minute</p>
     <p class="fsub">Weekdays, Sep 2021 – Sep 2024 · hover for values</p>
     <div class="figwrap" id="fourpmWrap"></div>
   </div>
-  <p class="figcap">Two statutory regimes, one design: the legislature repriced the surcharge from
-  <b>$1.00 to $2.50</b> on December 19, 2022 — and the step at 4:00 grew with the dose. Per statutory
+  <p class="figcap">The legislature repriced the surcharge from <b>$1.00 to $2.50</b> on December 19, 2022, and the step at 4:00 grew with the dose. Per statutory
   dollar the pooled estimate is <b>0.108 (SE 0.001)</b>; dropping every control moves it about a cent.</p>
   <details class="dtab"><summary>Data table</summary><div id="fourpmTable"></div></details>
 </section>
@@ -306,7 +295,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     <div class="kicker"><span class="dot"></span><span class="eyebrow">How the estimate is built</span></div>
     <h2>Constructing the estimate: four steps</h2>
     <p style="margin-top:12px">The estimand is a partial derivative:
-    <span class="mono">ρ = ∂E[tip] / ∂(statutory surcharge)</span> — how many cents the average
+    <span class="mono">ρ = ∂E[tip] / ∂(statutory surcharge)</span>: how many cents the average
     credit-card tip moves when the legislature puts one more dollar on the meter. Step through
     what it takes to earn the word <em>causal</em>.</p>
   </div>
@@ -321,7 +310,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     <div class="howbox">
       <div class="hownum" id="howNum">$0.389</div>
       <div class="howtext" id="howTxt">Compare weekday trips just before and just after 4:00&nbsp;PM in the $2.50
-      regime: tips jump <b>$0.389</b>. Tempting — but wrong to call causal yet.</div>
+      regime: tips jump <b>$0.389</b>. This estimate is not yet causal.</div>
     </div>
   </div>
 </section>
@@ -330,9 +319,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <div class="prose">
     <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact three · one parameter</span></div>
     <h2>All locked estimates on a common axis</h2>
-    <p style="margin-top:12px">Doses from $0.50 to $5.00. Surcharges switching on and off. Three clocks. A flat
-    fare where the usual confound cannot exist. A spatial boundary with no clock at all. And one honest
-    failure — reported, in grey, with its diagnosis.</p>
+    <p style="margin-top:12px">The doses range from $0.50 to $5.00; surcharges switch both on and off; three clock cutoffs are used; the JFK flat fare removes the fare confound by construction; and the toll boundary provides identification with no clock involved. The one failure is reported, in grey, with its diagnosis.</p>
   </div>
   
   <div class="fig" style="padding-bottom:18px">
@@ -348,8 +335,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <p class="roadnote" id="roadnote">Six legislated switches at three clocks, two doses, both directions.</p>
     <div class="figwrap" id="coefWrap"></div>
   </div>
-  <p class="figcap">The dashed line is the pooled clock mean, <b>0.108</b>. The 2025 congestion toll —
-  identified purely from geography — lands at <b>0.107</b>. JFK&rsquo;s $5.00 flat-fare surcharge gives
+  <p class="figcap">The dashed line is the pooled clock mean, <b>0.108</b>. The 2025 congestion toll, identified purely from geography, lands at <b>0.107</b>. JFK&rsquo;s $5.00 flat-fare surcharge gives
   <b>0.149</b> with <b>no controls at all</b>. The one failure (6&nbsp;AM weekdays) has a diagnosis: dawn
   airport composition, and its weekend twin behaves.</p>
   <details class="dtab"><summary>Data table</summary><div id="coefTable"></div></details>
@@ -359,18 +345,14 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   <div class="prose">
     <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact four · attention</span></div>
     <h2>Riders do not adjust</h2>
-    <p style="margin-top:12px">On December 19, 2022 the rush surcharge rose 150% overnight — $1.50 more on
-    the same bill. Two habits predict two lines: riders who keep tipping their usual <em>percentage</em>
-    show a flat tip rate; riders who defend their tip <em>dollars</em> ("the ride didn&rsquo;t change") must cut
-    the rate by 1.1 points. Watch which habit wins.</p>
+    <p style="margin-top:12px">On December 19, 2022 the rush surcharge rose 150% overnight, adding $1.50 to the same bill. Two habits predict two lines. Riders who keep tipping their usual <em>percentage</em> show a flat tip rate; riders who hold their tip <em>dollars</em> fixed must cut the rate by 1.1 points.</p>
   </div>
   <div class="fig">
     <p class="ftitle">Weekly tip rate: rush window vs. surcharge-free pre-rush window</p>
     <p class="fsub">Weekdays, 26 weeks around December 19, 2022</p>
     <div class="figwrap" id="decWrap"></div>
   </div>
-  <p class="figcap">The rate fell <b>0.22 points</b> — one-fifth of the way to the dollar-defending
-  benchmark. Riders kept their customary percentage on the bigger bill; four-fifths of the increase passed
+  <p class="figcap">The rate fell <b>0.22 points</b>, one-fifth of the way to the dollar-defending benchmark. Riders kept their customary percentage on the bigger bill; four-fifths of the increase passed
   through, immediately and permanently. The one-fifth that didn&rsquo;t? Almost entirely the round-dollar
   tippers ("$5 every time"), whose tips don&rsquo;t scale with the bill by construction.</p>
   <details class="dtab"><summary>Data table</summary><div id="decTable"></div></details>
@@ -385,7 +367,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   </div>
   <div class="litgrid">
     <div class="lit"><div class="who">Haggag &amp; Paci</div><div class="venue">AEJ: Applied · 2014</div>
-      <dl><dt>They vary</dt><dd>the menu — screens switched from $2/$3/$4 to 20/25/30% at a $15 fare</dd>
+      <dl><dt>They vary</dt><dd>the menu: screens switched from $2/$3/$4 to 20/25/30% at a $15 fare</dd>
       <dt>They find</dt><dd>defaults cause tips: +$0.28 at the threshold (we re-ran their archive)</dd>
       <dt>Left open</dt><dd>what the percentage <em>multiplies</em></dd></dl></div>
     <div class="lit"><div class="who">Thakral &amp; Tô</div><div class="venue">Working paper · 2026</div>
@@ -397,14 +379,13 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
       <dt>They find</dt><dd>consumers under-react to taxes they don&rsquo;t see</dd>
       <dt>Left open</dt><dd>interfaces that do the arithmetic <em>for</em> you</dd></dl></div>
     <div class="lit"><div class="who">Lynn &amp; Kwortnik</div><div class="venue">IJHM · 2023 · 68M checks</div>
-      <dl><dt>They vary</dt><dd>nothing — cross-section of restaurant bills</dd>
+      <dl><dt>They vary</dt><dd>nothing; a cross-section of restaurant bills</dd>
       <dt>They find</dt><dd>tip rates rise with local sales-tax rates</dd>
       <dt>Left open</dt><dd>causality, and cents-per-dollar magnitude</dd></dl></div>
     <div class="lit ours"><div class="who">This paper</div><div class="venue">Sotomayor &amp; Uceda-Sosa · 2026</div>
       <dl><dt>We vary</dt><dd>the <b>statutory base itself</b>: six clock switches, a 150% legislated repricing,
       a $4.50→$5.00 flat-fare dose, and a congestion toll&rsquo;s spatial boundary</dd>
-      <dt>We find</dt><dd>ρ = ∂E[tip]/∂surcharge ≈ <b>11¢ per legislated dollar</b> — stable everywhere the design
-      is valid, zero where it should be, inert among whole-dollar tippers — and <b>$21M/yr</b> of congestion
+      <dt>We find</dt><dd>ρ = ∂E[tip]/∂surcharge ≈ <b>11¢ per legislated dollar</b>: stable where the design is valid, zero where it should be, inert among whole-dollar tippers; and <b>$21M/yr</b> of congestion
       charges converted to unlegislated gratuities</dd>
       <dt>New</dt><dd>policy variation → a fiscal-incidence parameter, and the base as a regulable dial</dd></dl></div>
   </div>
@@ -415,13 +396,13 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     <div class="kicker"><span class="dot"></span><span class="eyebrow">Fact five · a real tax</span></div>
     <h2>The 2025 congestion toll: dose–response</h2>
     <p style="margin-top:12px">The rush surcharge is a fare component. The January 2025 congestion toll is a
-    <em>tax</em> — collected from riders, remitted by drivers to the MTA. Routes differ in how often the
+    <em>tax</em>, collected from riders and remitted by drivers to the MTA. Routes differ in how often the
     toll is actually charged, and the tip effect climbs step-for-step with that dose.</p>
   </div>
   
   <div class="cabwrap reveal">
     <canvas id="cabCanvas" width="860" height="330" aria-label="Stylized cab crossing the 60th Street toll line"></canvas>
-    <div class="cabcap"><span>Stylized Manhattan grid — the dashed line is 60th St.</span>
+    <div class="cabcap"><span>Stylized Manhattan grid; the dashed line is 60th St.</span>
       <span>Fee collected <span class="mono" id="cabFee">$0.00</span> · tips induced <span class="mono" id="cabTip">$0.00</span></span></div>
   </div>
 
@@ -431,7 +412,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     <div class="figwrap" id="doseWrap"></div>
   </div>
   <p class="figcap">Zone drift would have to reproduce this gradient by coincidence. In the paper, the
-  district also <b>materializes on a map</b> at the real toll date — and not at a placebo date.</p>
+  district also <b>emerges on a map</b> at the true toll date and not at a placebo date.</p>
 </section>
 
 <!-- ============================== DIAL ============================== -->
@@ -463,8 +444,7 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
       <input id="feeSlider" type="range" min="0" max="5" step="0.25" value="0.75" aria-label="Toll per trip in dollars">
       <p class="note" style="margin-top:12px">Tips range uses ρ = 0.108 (per statutory dollar, pooled) to
       0.150 (per recorded dollar). Volume held at the 2025 toll&rsquo;s charged card trips; dose-linearity is
-      tested in the paper up to $5.00. The actual 2025 toll is $0.75; the 2019 congestion surcharge — still
-      running at $2.50 — moves about <span class="mono">$8–11M</span> a year by itself.</p>
+      tested in the paper up to $5.00. The actual 2025 toll is $0.75. The 2019 congestion surcharge, still in force at $2.50, moves about <span class="mono">$8–11M</span> a year by itself.</p>
     </div>
   </div>
 </section>
@@ -474,10 +454,9 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
     <div class="kicker"><span class="dot"></span><span class="eyebrow">The point</span></div>
     <h2>What a default is computed <em>on</em> matters as much as what it is set <em>to</em></h2>
     <p style="margin-top:14px">In 2012, one payment vendor computed suggestions on the fare and surcharge;
-    the other included tax and tolls. By 2025 every vendor had converged on the all-in total — and with
-    that convergence, a fiscal channel nobody voted on: about <strong>$21 million a year</strong> of New
+    the other included tax and tolls. By 2025 every vendor had converged on the all-in total, and with that convergence came a fiscal channel nobody voted on: about <strong>$21 million a year</strong> of New
     York&rsquo;s congestion charges continue past the MTA to drivers as gratuities. The transfer runs from
-    riders to drivers, plausibly progressively — the point is not that it is bad, but that
+    riders to drivers, plausibly progressively. The point is not that the transfer is bad, but that
     <em>no one chose it</em>. The dial that sets it is one line of payment-terminal arithmetic.</p>
   </div>
 </section>
@@ -753,16 +732,16 @@ function hideTT(t){ t.style.opacity=0; }
   // weekend layer (hidden until step 3)
   const weG=S('g',{opacity:0}); svg.appendChild(weG);
   DATA.fourpmWE.forEach(d=>weG.appendChild(S('circle',{cx:xs(d.rv),cy:ys(d.tip),r:3.2,fill:col.blue2})));
-  const welab=S('text',{x:xs(-44),y:ys(3.30),class:'serlab',fill:col.blue2});welab.textContent='weekends — same clock, no surcharge';weG.appendChild(welab);
+  const welab=S('text',{x:xs(-44),y:ys(3.30),class:'serlab',fill:col.blue2});welab.textContent='weekends: same clock, no surcharge';weG.appendChild(welab);
   // confound annotation (step 2)
   const cfG=S('g',{opacity:0}); svg.appendChild(cfG);
   const arr=S('text',{x:xs(18),y:ys(5.05),class:'serlab',fill:col.ink});arr.textContent='⚠ fares jump $0.49 here too';cfG.appendChild(arr);
   const num=document.getElementById('howNum'), txt=document.getElementById('howTxt');
   const steps={
-    1:{n:'$0.389',t:'Compare weekday trips just before and after 4:00 PM ($2.50 regime): tips jump <b>$0.389</b>. Tempting — but not causal yet.',we:0,cf:0},
-    2:{n:'$0.292',t:'Rush hour makes trips slower and dearer — the metered fare itself jumps <b>$0.49</b> at 4:00. Conditioning on the non-surcharge base removes that channel: <b>$0.292</b>.',we:0,cf:1},
-    3:{n:'$0.271',t:'Weekends face the same 4:00 PM — with <b>no surcharge</b>. Difference the two steps (difference-in-discontinuities): <b>$0.271</b>. Drop every control and it moves a cent — the counterfactual does the work.',we:1,cf:1},
-    4:{n:'0.108<span class="per"> per $</span>',t:'Divide by the statutory $2.50: <b>ρ ≈ 0.108</b> — eleven cents per legislated dollar. Same answer at every dose $0.50–$5.00, on JFK flat fares with no controls, and at the toll&rsquo;s spatial boundary.',we:1,cf:1}
+    1:{n:'$0.389',t:'Compare weekday trips just before and after 4:00 PM ($2.50 regime): tips jump <b>$0.389</b>. This estimate is not yet causal.',we:0,cf:0},
+    2:{n:'$0.292',t:'Rush hour makes trips slower and dearer: the metered fare itself jumps <b>$0.49</b> at 4:00. Conditioning on the non-surcharge base removes that channel: <b>$0.292</b>.',we:0,cf:1},
+    3:{n:'$0.271',t:'Weekends face the same 4:00 PM with <b>no surcharge</b>. Difference the two steps (difference-in-discontinuities): <b>$0.271</b>. Dropping every control moves the estimate by about a cent; the counterfactual does the work.',we:1,cf:1},
+    4:{n:'0.108<span class="per"> per $</span>',t:'Divide by the statutory $2.50: <b>ρ ≈ 0.108</b>, eleven cents per legislated dollar. The estimate is the same at every dose from $0.50 to $5.00, on JFK flat fares with no controls, and at the toll boundary.',we:1,cf:1}
   };
   const btns=[...document.querySelectorAll('.stepper button')];
   function go(k){const st=steps[k];
@@ -778,9 +757,9 @@ function hideTT(t){ t.style.opacity=0; }
   const roads=document.getElementById('roads'); if(!roads) return;
   const note=document.getElementById('roadnote');
   const notes={all:'Six legislated switches at three clocks, two doses, both directions.',
-    clock:'Same trips minutes apart — anything slow-moving (norms, seasons, composition trends) cannot explain a step at an exact statutory minute.',
+    clock:'Trips minutes apart are compared, so slow-moving factors (norms, seasons, composition trends) cannot explain a step at an exact statutory minute.',
     jfk:'The JFK fare is flat, so the fare-jump confound cannot exist by construction. Same answer with no controls at all: 0.149 at a $5.00 dose.',
-    toll:'No clock anywhere — identification from the 60th St boundary in space. Lands at 0.107 against the clocks&rsquo; pooled 0.108.',
+    toll:'Identification comes from the 60th St boundary in space, with no clock involved. The estimate is 0.107 against the clocks&rsquo; pooled 0.108.',
     falsif:'Where the design must find nothing, it does (weekend placebos ≈ 0); where it must fail, it does and we can say why (6 AM weekday dawn composition).'};
   const wrap=document.getElementById('coefWrap');
   function apply(g){
@@ -816,7 +795,7 @@ function hideTT(t){ t.style.opacity=0; }
     ctx.fillStyle='rgba(245,179,1,0.06)'; ctx.fillRect(50,tollY,W-90,H-18-tollY);
     ctx.setLineDash([10,7]); ctx.strokeStyle=flash>0?'#FFE082':'#F5B301'; ctx.lineWidth=flash>0?3.5:2;
     ctx.beginPath();ctx.moveTo(50,tollY);ctx.lineTo(W-40,tollY);ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle='#F5B301'; ctx.font='600 12px system-ui'; ctx.fillText('60th St — $0.75 toll line',56,tollY-8);
+    ctx.fillStyle='#F5B301'; ctx.font='600 12px system-ui'; ctx.fillText('60th St: $0.75 toll line',56,tollY-8);
     ctx.fillStyle='#7A828E'; ctx.fillText('CBD (tolled zone)',56,H-28);
     // route
     ctx.strokeStyle='rgba(143,180,223,0.5)'; ctx.lineWidth=3; ctx.beginPath();
