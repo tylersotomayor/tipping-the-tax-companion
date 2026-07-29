@@ -169,6 +169,23 @@ footer{border-top:1px solid var(--rule);margin-top:70px;padding:34px 0 60px;
   border:1.5px solid var(--rule);background:transparent;color:var(--ink2);border-radius:8px;padding:6px 11px;cursor:pointer}
 .roads button[aria-pressed="true"]{border-color:var(--cabdeep);background:color-mix(in srgb, var(--cab) 18%, transparent);color:var(--ink)}
 .roads button:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+
+/* glossary terms + popover */
+.term{border-bottom:1.5px dotted var(--cabdeep);cursor:help}
+.term:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+#termPop{position:fixed;z-index:9999;max-width:340px;background:var(--card);color:var(--ink);
+  border:1px solid var(--rule);border-radius:10px;box-shadow:var(--shadow);
+  padding:12px 14px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;line-height:1.5;
+  pointer-events:none}
+#termPop b{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+#termPop[hidden]{display:none}
+
+/* definition card */
+.defcard{max-width:640px;margin:26px auto 0;background:var(--card);border-left:3px solid var(--cab);
+  border-radius:0 12px 12px 0;box-shadow:var(--shadow);padding:20px 24px}
+.defcard .defq{font-size:18px;line-height:1.6;margin:0 0 8px}
+.defcard .defsrc{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--mut);margin:0 0 12px}
+.defcard .defmap{font-size:16.5px;color:var(--ink2);margin:0}
 .roadnote{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--mut);min-height:20px;margin:0 0 8px}
 .cg{transition:opacity .18s}
 /* literature cards */
@@ -342,6 +359,11 @@ estimate per statutory dollar, 0.108 (SE 0.001).</p>
       regime: tips jump <b>$0.389</b>. This estimate is not yet causal.</div>
     </div>
   </div>
+  <aside class="defcard">
+    <p class="defq">&ldquo;In randomized trials with imperfect compliance, when treatment assignment differs from treatment delivered, effects of random assignment&hellip;are called intention-to-treat (ITT) effects. An ITT analysis captures the causal effect of being assigned to treatment.&rdquo;</p>
+    <p class="defsrc">Angrist and Pischke, <em>Mastering &rsquo;Metrics</em> (2015)</p>
+    <p class="defmap">Here the <span class="term" data-term="treatment" tabindex="0">treatment</span> is the surcharge entering the bill, and the <span class="term" data-term="assignment" tabindex="0">assignment</span> is the statute: at 4:00&nbsp;PM on a non-holiday weekday, every trip is assigned the full dose. Delivery belongs to the meter, which <span class="term" data-term="compliance" tabindex="0">complies</span> imperfectly, each legislated dollar producing $0.77 of recorded surcharge (the <span class="term" data-term="firststage" tabindex="0">first stage</span>). The headline 0.108 is the ITT, the effect of the enactment itself, counting the trips the meter never charged; the <span class="term" data-term="tsls" tabindex="0">2SLS</span> estimate 0.140 rescales it to the dollars actually delivered.</p>
+  </aside>
   <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">The stepper reproduces the paper&rsquo;s estimating equation: T = &alpha; + &pi;D + &omega;W + &delta;(D&times;W) + &gamma;B + f(r)&times;W + &epsilon;, where D indicates minutes past the cutoff, W indicates weekdays, B is the non-surcharge base, and f(r) is a local-linear trend in pickup minute on each side, separately by day type. Cells are weighted by card trips and standard errors are clustered by date; the bandwidth is &plusmn;60 minutes. The headline divides &delta; by the statutory dose. Source: 22_coefplot.do, logged in logs/coefplot.log.</p></details>
 </section>
 
@@ -373,7 +395,7 @@ estimate per statutory dollar, 0.108 (SE 0.001).</p>
   the treated step (<b>0.096</b>). The one failure (6&nbsp;AM weekdays) has a diagnosis: dawn
   airport composition, and its weekend twin behaves.</p>
   <details class="dtab"><summary>Data table</summary><div id="coefTable"></div></details>
-  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">Clock rows: the reduced-form jump at each cutoff from a local-linear regression in pickup minute (bandwidth &plusmn;60), conditioning on the non-surcharge base, weighted by card trips, clustered by date, then divided by the statutory dose. Calendar triangles: the same difference-in-discontinuities re-estimated with exempt legal holidays replacing weekends as the control group, 0.239 (0.028) at the $2.50 dose (wild cluster bootstrap p &lt; 10<sup>&minus;5</sup>) and 0.095 (0.038) at $1.00 (p = 0.035), each divided by its dose; the Juneteenth row is the fare-conditioned 4&nbsp;PM step on the one weekday holiday the statute still charges, 0.241 (0.067) at the $2.50 dose; and the exempt-holiday placebo is the fare-conditioned step on exempt holidays themselves, 0.055 (0.030), divided by the dose (computed in 24_holidays.do). JFK squares: the identical specification on RatecodeID-2 flat fares at doses of $4.50 and $5.00; because the fare is flat, the estimate is unchanged without any controls. Toll diamond: an origin&ndash;destination difference-in-differences (a trip is eligible if pickup or dropoff lies in the zone) with route and month fixed effects, clustered by pickup zone; the coefficient $0.080 (0.005) is divided by the $0.75 statutory toll. Hollow circles: weekend and exempt-holiday placebo steps divided by the matched regime&rsquo;s dose. Grey: the 6&nbsp;AM weekday cutoff, where the dawn shift toward airport traffic breaks the fare conditioning; its weekend twin is normal. The dashed line is the precision-weighted mean of the six primary changes. Clustering follows the assignment mechanism (dates for the clocks, pickup zones for the toll); designs with few clusters use the wild cluster bootstrap; and minimum detectable effects, 2.8 times the standard error, are reported for every design (0.005 to 0.039 per dollar) so that null results are interpretable. Source: logs/coefplot.log and logs/stata-master.log.</p></details>
+  <details class="dtab"><summary>How this is computed</summary><p style="max-width:76ch">Clock rows: the <span class="term" data-term="reducedform" tabindex="0">reduced-form</span> jump at each cutoff from a local-linear regression in pickup minute (bandwidth &plusmn;60), conditioning on the non-surcharge base, weighted by card trips, clustered by date, then divided by the statutory dose. Calendar triangles: the same difference-in-discontinuities re-estimated with exempt legal holidays replacing weekends as the control group, 0.239 (0.028) at the $2.50 dose (wild cluster bootstrap p &lt; 10<sup>&minus;5</sup>) and 0.095 (0.038) at $1.00 (p = 0.035), each divided by its dose; the Juneteenth row is the fare-conditioned 4&nbsp;PM step on the one weekday holiday the statute still charges, 0.241 (0.067) at the $2.50 dose; and the exempt-holiday placebo is the fare-conditioned step on exempt holidays themselves, 0.055 (0.030), divided by the dose (computed in 24_holidays.do). JFK squares: the identical specification on RatecodeID-2 flat fares at doses of $4.50 and $5.00; because the fare is flat, the estimate is unchanged without any controls. Toll diamond: an origin&ndash;destination difference-in-differences (a trip is eligible if pickup or dropoff lies in the zone) with route and month fixed effects, clustered by pickup zone; the coefficient $0.080 (0.005) is divided by the $0.75 statutory toll. Hollow circles: weekend and exempt-holiday placebo steps divided by the matched regime&rsquo;s dose. Grey: the 6&nbsp;AM weekday cutoff, where the dawn shift toward airport traffic breaks the fare conditioning; its weekend twin is normal. The dashed line is the precision-weighted mean of the six primary changes. Clustering follows the assignment mechanism (dates for the clocks, pickup zones for the toll); designs with few clusters use the wild cluster bootstrap; and minimum detectable effects, 2.8 times the standard error, are reported for every design (0.005 to 0.039 per dollar) so that null results are interpretable. Source: logs/coefplot.log and logs/stata-master.log.</p></details>
 
   <div class="fig">
     <p class="ftitle">Hypothesis testing, drawn: the permutation distribution</p>
@@ -805,7 +827,7 @@ function hideTT(t){ t.style.opacity=0; }
     1:{n:'$0.389',t:'Compare weekday trips just before and after 4:00 PM ($2.50 regime): tips jump <b>$0.389</b>. This estimate is not yet causal.',we:0,cf:0},
     2:{n:'$0.292',t:'Rush hour makes trips slower and dearer: the metered fare itself jumps <b>$0.49</b> at 4:00, so covariate continuity fails and the balance table says so. Conditioning on the non-surcharge base removes that channel: <b>$0.292</b>. Note the bad-control trap: the all-in total contains the surcharge, so the control must exclude it.',we:0,cf:1},
     3:{n:'$0.271',t:'Weekends face the same 4:00 PM with <b>no surcharge</b>, supplying the counterfactual. Differencing the two steps is a difference-in-discontinuities: <b>$0.271</b>. Dropping every control moves the estimate by about a cent, so identification does not rest on functional form.',we:1,cf:1},
-    4:{n:'0.108<span class="per"> per $</span>',t:'Divide by the statutory $2.50: <b>ρ ≈ 0.108</b>, an intention-to-treat effect per legislated dollar. Instrumenting the recorded surcharge instead gives 2SLS of 0.140 (SE 0.004), but its exclusion restriction cannot be verified in a contaminated meter field, which is why the ITT is the headline. The estimate repeats at every dose from $0.50 to $5.00, on JFK flat fares with no controls, and at the toll boundary.',we:1,cf:1}
+    4:{n:'0.108<span class="per"> per $</span>',t:'Divide by the statutory $2.50: <b>ρ ≈ 0.108</b>, an <span class="term" data-term="itt" tabindex="0">intention-to-treat</span> effect per legislated dollar. Instrumenting the recorded surcharge instead gives <span class="term" data-term="tsls" tabindex="0">2SLS</span> of 0.140 (SE 0.004), but its <span class="term" data-term="exclusion" tabindex="0">exclusion restriction</span> cannot be verified in a contaminated meter field, which is why the ITT is the headline. The estimate repeats at every dose from $0.50 to $5.00, on JFK flat fares with no controls, and at the toll boundary.',we:1,cf:1}
   };
   const btns=[...document.querySelectorAll('.stepper button')];
   function go(k){const st=steps[k];
@@ -954,5 +976,41 @@ function hideTT(t){ t.style.opacity=0; }
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));return;}
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+})();
+
+/* ---------------- glossary popovers ----------------
+   To add a term: add an entry to TERMS below, then wrap any occurrence in the
+   page (or inside a step string) as
+     <span class="term" data-term="key" tabindex="0">word</span>
+   Wiring is event-delegated, so spans injected later work too. */
+(function(){
+  const TERMS={
+    treatment:{t:'Treatment',d:'The variable whose causal effect is in question. Here: the statutory surcharge entering the bill, so that the suggested-tip percentages multiply a bigger base.'},
+    assignment:{t:'Assignment',d:'What the rule declares, as distinct from what happens on the meter. At 4:00 PM on a non-holiday weekday the statute assigns every trip the full dose; delivery is a separate event.'},
+    compliance:{t:'Compliance',d:'Whether assigned treatment is actually delivered. Meters comply imperfectly: each legislated $2.50 produces about $1.93 of recorded surcharge, so 77 cents of every assigned dollar arrive. The drug-trial parallel is the patient who is prescribed the pill but never takes it.'},
+    itt:{t:'Intention-to-treat (ITT)',d:'The causal effect of being assigned to treatment, delivered or not. The headline 0.108 is an ITT: tips per legislated dollar, counting the trips the meter never charged. It requires no exclusion restriction, only that assignment is as good as random at the cutoff.'},
+    firststage:{t:'First stage',d:'The effect of assignment on delivery: $1.93 of recorded surcharge per $2.50 legislated, or 0.77 per assigned dollar.'},
+    reducedform:{t:'Reduced form',d:'The effect of assignment directly on the outcome, skipping delivery: the $0.271 tip jump at the cutoff. Divided by the statutory dose, it is the ITT per legislated dollar.'},
+    tsls:{t:'Two-stage least squares (2SLS)',d:'The reduced form divided by the first stage: 0.271 / 1.93 &asymp; 0.140 per delivered dollar. Valid only under the exclusion restriction, which is why the paper reports it but headlines the ITT.'},
+    exclusion:{t:'Exclusion restriction',d:'The assumption that assignment moves the outcome only through delivered treatment: crossing 4:00 PM may raise tips only via the recorded surcharge. Untestable in general, and doubly so here, because the meter field recording the surcharge is contaminated.'}
+  };
+  const pop=document.createElement('div'); pop.id='termPop'; pop.hidden=true; document.body.appendChild(pop);
+  let cur=null;
+  function show(el){ const e=TERMS[el.dataset.term]; if(!e) return;
+    pop.innerHTML='<b>'+e.t+'</b>'+e.d; pop.hidden=false;
+    const r=el.getBoundingClientRect(), pw=pop.offsetWidth, ph=pop.offsetHeight;
+    const x=Math.min(Math.max(12, r.left+r.width/2-pw/2), innerWidth-pw-12);
+    let y=r.top-ph-10; if(y<8) y=r.bottom+10;
+    pop.style.left=x+'px'; pop.style.top=y+'px'; cur=el; }
+  function hide(){ cur=null; pop.hidden=true; }
+  const tgt=e=>e.target&&e.target.closest ? e.target.closest('.term') : null;
+  document.addEventListener('mouseover',e=>{const el=tgt(e); if(el) show(el);});
+  document.addEventListener('mouseout',e=>{const el=tgt(e); if(el&&el===cur) hide();});
+  document.addEventListener('focusin',e=>{const el=tgt(e); if(el) show(el);});
+  document.addEventListener('focusout',e=>{const el=tgt(e); if(el&&el===cur) hide();});
+  document.addEventListener('click',e=>{const el=tgt(e);
+    if(el){ e.preventDefault(); (cur===el&&!pop.hidden)?hide():show(el); } else hide(); });
+  addEventListener('scroll',hide,{passive:true});
+  addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); });
 })();
 </script>
