@@ -440,7 +440,7 @@ estimate per statutory dollar, 0.108 (SE 0.001).</p>
   <div class="prose">
     <div class="kicker"><span class="dot"></span><span class="eyebrow">What came before</span></div>
     <h2>Relation to prior work</h2>
-    <p style="margin-top:12px">Each of these papers varies one element of the same mechanism. This paper varies the element a legislature controls.</p>
+    <p style="margin-top:12px">Each of these papers varies one element of the same mechanism. Our paper varies the element a legislature controls.</p>
   </div>
   <div class="litgrid">
     <div class="lit"><div class="who">Haggag &amp; Paci</div><div class="venue">AEJ: Applied · 2014</div>
@@ -459,11 +459,11 @@ estimate per statutory dollar, 0.108 (SE 0.001).</p>
       <dl><dt>They vary</dt><dd>nothing; a cross-section of restaurant bills</dd>
       <dt>They find</dt><dd>tip rates rise with local sales-tax rates</dd>
       <dt>Left open</dt><dd>causality, and cents-per-dollar magnitude</dd></dl></div>
-    <div class="lit ours"><div class="who">This paper</div><div class="venue">Sotomayor &amp; Uceda-Sosa · 2026</div>
-      <dl><dt>We vary</dt><dd>the <b>statutory base itself</b>: six clock switches, a 150% legislated repricing,
+    <div class="lit ours"><div class="who">Our paper</div><div class="venue">Sotomayor &amp; Uceda-Sosa · 2026</div>
+      <dl><dt>We vary</dt><dd>the <b>statutory base itself</b>: six clock switches, a $1.50 legislated repricing,
       a $4.50→$5.00 flat-fare dose, and a congestion toll&rsquo;s spatial boundary</dd>
-      <dt>We find</dt><dd>ρ = ∂E[tip]/∂surcharge ≈ <b>11¢ per legislated dollar</b>: stable where the design is valid, zero where it should be, inert among whole-dollar tippers; and <b>$21M/yr</b> of congestion
-      charges converted to unlegislated gratuities</dd>
+      <dt>We find</dt><dd>ρ = ∂E[tip]/∂surcharge ≈ <b>11¢ per legislated dollar</b>, stable across doses and designs; whole-dollar tippers are inert; and government charges generate <b>$15–21M/yr</b>
+      in unlegislated gratuities</dd>
       <dt>New</dt><dd>policy variation → a fiscal-incidence parameter, and the base as a regulable dial</dd></dl></div>
   </div>
 </section>
@@ -847,7 +847,7 @@ function hideTT(t){ t.style.opacity=0; }
     cal:'The legal calendar switches the surcharge off on exempt holidays and leaves it on for Juneteenth. Exempt weekdays give a second control group inside the working week, 0.096 per dollar at both doses; Juneteenth, the one charged holiday, restores the treated step, 0.096.',
     jfk:'The JFK fare is flat, so the fare-jump confound cannot exist by construction. Same answer with no controls at all: 0.149 at a $5.00 dose.',
     toll:'Identification comes from the 60th St boundary in space, with no clock involved. The estimate is 0.107 against the clocks&rsquo; pooled 0.108.',
-    falsif:'Where the design must find nothing, it does (weekend placebos ≈ 0); where it must fail, it does and we can say why (6 AM weekday dawn composition). A predicted failure is evidence the assumptions bind.'};
+    falsif:'The weekend placebos recover nothing, and the one design that fails, the 6 AM weekday cutoff, fails for a reason we can verify in the data: the dawn shift toward airport trips. A predicted failure is evidence the assumptions bind.'};
   const wrap=document.getElementById('coefWrap');
   function apply(g){
     wrap.querySelectorAll('.cg').forEach(el=>{
